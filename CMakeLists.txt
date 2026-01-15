@@ -13,17 +13,31 @@ set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")
 
 add_executable(Pong)
 
-include(cmake/CPM.cmake)
+# Configuration
+target_compile_features(Pong PUBLIC cxx_std_23)
 
+# Sources
+file(GLOB Pong_SOURCE_FILES "${Pong_SOURCE_DIR}/src/*.cpp")
+target_sources(Pong PRIVATE ${Pong_SOURCE_FILES})
+
+# Headers
+add_library(Pong_Headers INTERFACE)
+file(GLOB Pong_INCLUDE_FILES "${Pong_SOURCE_DIR}/include/*.h")
+target_sources(Pong PRIVATE ${Pong_INCLUDE_FILES})
+target_include_directories(Pong_Headers INTERFACE
+						   "$<BUILD_INTERFACE:${Pong_SOURCE_DIR}/include>"
+)
+target_link_libraries(Pong PUBLIC Pong_Headers)
+
+# Package Management
+include(cmake/CPM.cmake)
 set(FETCHCONTENT_QUIET FALSE)
+
+# SDL3
 CPMAddPackage(
 	GITHUB_REPOSITORY "libsdl-org/SDL"
 	GIT_TAG "release-3.4.0"
 	OPTIONS "GIT_PROGRESS TRUE" "SDL_SHARED OFF" "SDL_TEST_LIBRARY OFF" "SDL_TESTS OFF" "SDL_INSTALL_TESTS OFF" "SDL_STATIC ON"
 )
-
-target_link_libraries(Pong PUBLIC SDL3::SDL3)
-
-target_sources(Pong PRIVATE src/main.cpp)
-target_compile_features(Pong PUBLIC cxx_std_23)
 target_compile_definitions(Pong PRIVATE SDL_MAIN_USE_CALLBACKS)
+target_link_libraries(Pong PUBLIC SDL3::SDL3)
