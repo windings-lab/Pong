@@ -2,7 +2,7 @@
 
 struct Test
 {
-	Test() = default;
+    Test() = default;
 
-	int counter = 0;
+    int counter = 0;
 };
