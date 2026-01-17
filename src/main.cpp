@@ -3,6 +3,7 @@
 #include <SDL3/SDL_main.h>
 
 #include "app_state.h"
+#include "gl_context.h"
 
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
@@ -22,7 +23,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
 
-    *appstate = new AppState(window);
+    auto as = new AppState(window, OpenGL_Context(window));
+    *appstate = as;
 
     return SDL_APP_CONTINUE;
 }

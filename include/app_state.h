@@ -3,10 +3,12 @@
 typedef struct SDL_Window SDL_Window;
 typedef struct SDL_GLContextState *SDL_GLContext;
 
+struct OpenGL_Context;
+
 class AppState
 {
 public:
-    explicit AppState(SDL_Window* window);
+    explicit AppState(SDL_Window* window, OpenGL_Context&& gl_context);
 
     AppState(const AppState&) = delete;
     AppState& operator=(const AppState&) = delete;
@@ -23,5 +25,5 @@ private:
     void swap(AppState& a, AppState& b) noexcept;
 
     SDL_Window* window;
-    SDL_GLContext gl_context;
+    OpenGL_Context& gl_context;
 };
