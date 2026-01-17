@@ -29,6 +29,15 @@ target_include_directories(Pong_Headers INTERFACE
 )
 target_link_libraries(Pong PUBLIC Pong_Headers)
 
+# Utility
+add_library(Pong_Utility INTERFACE)
+file(GLOB Pong_UTILITY_HEADERS "${Pong_SOURCE_DIR}/include/utility/*.h")
+target_sources(Pong PRIVATE ${Pong_UTILITY_HEADERS})
+target_include_directories(Pong_Utility INTERFACE
+						   "$<BUILD_INTERFACE:${Pong_SOURCE_DIR}/include/utility>"
+)
+target_link_libraries(Pong PUBLIC Pong_Utility)
+
 # Package Management
 include(cmake/CPM.cmake)
 set(FETCHCONTENT_QUIET FALSE)

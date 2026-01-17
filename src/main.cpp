@@ -9,19 +9,20 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
     SDL_SetLogPriority(SDL_LOG_CATEGORY_SYSTEM, SDL_LOG_PRIORITY_INFO);
 
-    if (!SDL_SetAppMetadata("Pong", "1.0.0", nullptr)) {
-        return SDL_APP_FAILURE;
-    }
+    SDL_SetAppMetadata("Pong", "1.0.0", nullptr);
 
     if (!SDL_Init(SDL_INIT_VIDEO)) {
-        SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
+        SDL_Log("%s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
 
     SDL_Window* window = SDL_CreateWindow("Pong", 800, 600, SDL_WINDOW_OPENGL);
+    if (!window) {
+        SDL_Log("%s", SDL_GetError());
+        return SDL_APP_FAILURE;
+    }
 
-    auto* as = new AppState(window);
-    *appstate = as;
+    *appstate = new AppState(window);
 
     return SDL_APP_CONTINUE;
 }
