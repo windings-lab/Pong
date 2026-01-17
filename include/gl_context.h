@@ -3,8 +3,9 @@
 typedef struct SDL_Window SDL_Window;
 typedef struct SDL_GLContextState *SDL_GLContext;
 
-struct OpenGL_Context
+class OpenGL_Context
 {
+public:
     explicit OpenGL_Context(SDL_Window* window);
     ~OpenGL_Context();
 
@@ -16,8 +17,11 @@ struct OpenGL_Context
 
     SDL_GLContext operator*() const;
 
-    SDL_GLContext gl_context;
+    void Iterate();
 
 private:
     void swap(OpenGL_Context& a, OpenGL_Context& b) noexcept;
+
+    SDL_Window* window;
+    SDL_GLContext gl_context;
 };

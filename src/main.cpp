@@ -23,8 +23,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
 
-    auto as = new AppState(window, OpenGL_Context(window));
-    *appstate = as;
+    *appstate = new AppState(window, OpenGL_Context(window));
 
     return SDL_APP_CONTINUE;
 }
@@ -47,6 +46,8 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
     auto* state = static_cast<AppState*>(appstate);
+
+    state->GLContext().Iterate();
 
     return SDL_APP_CONTINUE;
 }
