@@ -3,7 +3,6 @@
 #include <SDL3/SDL_main.h>
 
 #include "app_state.h"
-#include "gl_context.h"
 
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
@@ -17,13 +16,21 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
 
-    SDL_Window* window = SDL_CreateWindow("Pong", 800, 600, SDL_WINDOW_OPENGL);
-    if (!window) {
+    const char* title = "Pong";
+    int width = 800;
+    int height = 600;
+
+    SDL_Window* window;
+    SDL_Renderer* renderer;
+    SDL_CreateWindowAndRenderer(title, width, height, 0, &window, &renderer);
+    if (!window || !renderer) {
         SDL_Log("%s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
 
-    *appstate = new AppState(window, OpenGL_Context(window));
+    *appstate = new AppState(window, Pong::SDL_Renderer(window, renderer));
+    renderer = nullptr;
+    window = nullptr;
 
     return SDL_APP_CONTINUE;
 }
@@ -47,7 +54,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 {
     auto* state = static_cast<AppState*>(appstate);
 
-    state->GLContext().Iterate();
+    state->SDL_Renderer().Iterate();
 
     return SDL_APP_CONTINUE;
 }

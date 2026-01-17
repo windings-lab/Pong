@@ -92,5 +92,7 @@ ForEachMacros:
     "udev_list_entry_foreach",
   ]
 
+NamespaceIndentation: All
+
 ---
 

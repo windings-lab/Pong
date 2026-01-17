@@ -7,6 +7,13 @@
 AppState::AppState(SDL_Window* window, OpenGL_Context&& gl_context)
     : window(window)
     , gl_context(std::move(gl_context))
+    , sdl_renderer(std::nullopt)
+{
+}
+AppState::AppState(SDL_Window* window, Pong::SDL_Renderer&& sdl_renderer)
+    : window(window)
+    , gl_context(std::nullopt)
+    , sdl_renderer(std::move(sdl_renderer))
 {
 }
 
@@ -21,5 +28,10 @@ SDL_Window* AppState::Window() const
 }
 OpenGL_Context& AppState::GLContext()
 {
-    return gl_context;
+    return *gl_context;
 }
+Pong::SDL_Renderer& AppState::SDL_Renderer()
+{
+    return *sdl_renderer;
+}
+
