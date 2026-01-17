@@ -14,7 +14,10 @@ set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")
 add_executable(Pong)
 
 # Configuration
-target_compile_features(Pong PUBLIC cxx_std_23)
+target_compile_features(Pong PRIVATE cxx_std_23)
+
+# PCH
+target_precompile_headers(Pong PRIVATE "${Pong_SOURCE_DIR}/pch/pch.h")
 
 # Sources
 file(GLOB Pong_SOURCE_FILES "${Pong_SOURCE_DIR}/src/*.cpp")
@@ -36,7 +39,7 @@ target_sources(Pong PRIVATE ${Pong_UTILITY_HEADERS})
 target_include_directories(Pong_Utility INTERFACE
 						   "$<BUILD_INTERFACE:${Pong_SOURCE_DIR}/include/utility>"
 )
-target_link_libraries(Pong PUBLIC Pong_Utility)
+target_link_libraries(Pong PRIVATE Pong_Utility)
 
 # Package Management
 include(cmake/CPM.cmake)
@@ -49,4 +52,10 @@ CPMAddPackage(
 	OPTIONS "GIT_PROGRESS TRUE" "SDL_SHARED OFF" "SDL_TEST_LIBRARY OFF" "SDL_TESTS OFF" "SDL_INSTALL_TESTS OFF" "SDL_STATIC ON"
 )
 target_compile_definitions(Pong PRIVATE SDL_MAIN_USE_CALLBACKS)
-target_link_libraries(Pong PUBLIC SDL3::SDL3)
+target_link_libraries(Pong PRIVATE SDL3::SDL3)
+
+# OpenGL
+if(UNIX)
+	find_package(OpenGL REQUIRED)
+	target_link_libraries(Pong PRIVATE ${OPENGL_LIBRARIES})
+endif()

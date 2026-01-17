@@ -1,9 +1,8 @@
 #include "app_state.h"
 
-#include <stdexcept>
+#include "SDL3/SDL_opengl.h"
 
 #include <SDL3/SDL_video.h>
-#include <SDL3/SDL.h>
 
 AppState::AppState(SDL_Window* window)
     : window(window)
@@ -12,6 +11,13 @@ AppState::AppState(SDL_Window* window)
     if (!gl_context) {
         throw std::runtime_error(SDL_GetError());
     }
+
+#ifdef __unix__
+    // Clear first frame buffer
+    glClearColor(0.f, 0.f, 0.f, 1.f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    SDL_GL_SwapWindow(window);
+#endif
 }
 
 AppState::AppState(AppState&& old) noexcept

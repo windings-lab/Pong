@@ -1,5 +1,4 @@
 #pragma once
-#include <SDL3/SDL_video.h>
 
 typedef struct SDL_Window SDL_Window;
 typedef struct SDL_GLContextState *SDL_GLContext;
