@@ -55,7 +55,5 @@ target_compile_definitions(Pong PRIVATE SDL_MAIN_USE_CALLBACKS)
 target_link_libraries(Pong PRIVATE SDL3::SDL3)
 
 # OpenGL
-if(UNIX)
-	find_package(OpenGL REQUIRED)
-	target_link_libraries(Pong PRIVATE ${OPENGL_LIBRARIES})
-endif()
+find_package(OpenGL REQUIRED)
+target_link_libraries(Pong PRIVATE ${OPENGL_LIBRARIES})
