@@ -1,5 +1,6 @@
 #pragma once
 #include "paddle.h"
+#include "player_controller.h"
 
 #include <vector>
 
@@ -17,6 +18,7 @@ public:
 
     Paddle player;
     Paddle bot;
+    PlayerController player_controller;
 
 private:
     SDL_FRect constraint;

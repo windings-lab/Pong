@@ -10,6 +10,9 @@ PongScene::PongScene(SDL_FRect constraint)
     bot.rect.x = constraint.w - Paddle::width;
     bot.rect.y = constraint_mid_y;
 
+    player_controller.player = &player;
+
     game_objects.push_back(&player);
     game_objects.push_back(&bot);
+    game_objects.push_back(&player_controller);
 }

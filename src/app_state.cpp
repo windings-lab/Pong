@@ -1,7 +1,5 @@
 #include "app_state.h"
 
-#include "SDL3/SDL_video.h"
-
 #include "rhi/gl_context.h"
 
 const Uint64 AppState::frequency = SDL_GetPerformanceFrequency();
@@ -51,7 +49,9 @@ void AppState::Iterate()
     float dt = static_cast<float>(current_time - last_time) / frequency;
     last_time = current_time;
 
-    pong_scene.player.rect.y += 50 * dt;
+    for (auto game_object : pong_scene.game_objects) {
+        game_object->Iterate(dt);
+    }
 
     active_renderer->Iterate(pong_scene);
 }

@@ -39,6 +39,8 @@ namespace Pong
         SDL_RenderClear(sdl_renderer);
 
         for (auto game_object : pong_scene.game_objects) {
+            if (!game_object->visible) continue;
+
             DrawRect(game_object->rect);
         }
 

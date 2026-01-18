@@ -6,3 +6,14 @@ Paddle::~Paddle()
 {
 
 }
+void Paddle::Iterate(float dt)
+{
+    GameObject::Iterate(dt);
+
+    Move(dt);
+}
+
+void Paddle::Move(float dt)
+{
+    rect.y += speed * dt * movement_direction;
+}
