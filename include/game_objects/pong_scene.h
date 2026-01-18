@@ -1,4 +1,6 @@
 #pragma once
+
+#include "box_collision.h"
 #include "paddle.h"
 #include "player_controller.h"
 
@@ -21,5 +23,5 @@ public:
     PlayerController player_controller;
 
 private:
-    SDL_FRect constraint;
+    BoxCollision constraint;
 };

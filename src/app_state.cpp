@@ -1,6 +1,7 @@
 #include "app_state.h"
 
 #include "rhi/gl_context.h"
+#include "SDL3/SDL_rect.h"
 
 const Uint64 AppState::frequency = SDL_GetPerformanceFrequency();
 
@@ -51,6 +52,23 @@ void AppState::Iterate()
 
     for (auto game_object : pong_scene.game_objects) {
         game_object->Iterate(dt);
+    }
+
+    for (size_t i = 0; i < pong_scene.game_objects.size(); ++i) {
+        for (size_t j = i + 1; j < pong_scene.game_objects.size(); ++j) {
+
+            GameObject* a = pong_scene.game_objects[i];
+            GameObject* b = pong_scene.game_objects[j];
+
+            if (!a->collidable || !b->collidable)
+                continue;
+
+            SDL_FRect intersection;
+            if (SDL_GetRectIntersectionFloat(&a->rect, &b->rect, &intersection)) {
+                a->OnCollide(b, intersection);
+                b->OnCollide(a, intersection);
+            }
+        }
     }
 
     active_renderer->Iterate(pong_scene);

@@ -1,6 +1,8 @@
 #pragma once
 #include "game_object.h"
 
+struct PlayerController;
+
 struct Paddle : GameObject
 {
     Paddle();
@@ -8,6 +10,7 @@ struct Paddle : GameObject
     ~Paddle() override;
 
     void Iterate(float dt) override;
+    void OnCollide(GameObject* other, SDL_FRect intersection) override;
 
     void Move(float dt);
 
@@ -16,4 +19,5 @@ struct Paddle : GameObject
 
     float speed = 100.f;
     signed int movement_direction : 2 = 0;
+    PlayerController* player_controller;
 };
