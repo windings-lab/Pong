@@ -8,6 +8,7 @@ PongScene::PongScene(SDL_FRect constraint)
 
     bot.rect.x = constraint.w - Paddle::width;
     bot.rect.y = paddle_middle_height;
+    bot.speed = 100.f;
 
     player_controller.player = &player;
     player.player_controller = &player_controller;
@@ -19,6 +20,9 @@ PongScene::PongScene(SDL_FRect constraint)
     ball.spawn_point.y = ball_y_middle;
     ball.Spawn();
 
+    ai_controller.ball = &ball;
+    ai_controller.bot = &bot;
+
     this->constraint.rect = constraint;
 
     game_objects.push_back(&player);
@@ -26,4 +30,5 @@ PongScene::PongScene(SDL_FRect constraint)
     game_objects.push_back(&player_controller);
     game_objects.push_back(&this->constraint);
     game_objects.push_back(&ball);
+    game_objects.push_back(&ai_controller);
 }

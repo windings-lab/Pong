@@ -15,7 +15,7 @@ struct Ball : GameObject
 
     static constexpr float width = 25.f;
     static constexpr float height = 25.f;
-    static constexpr float speed = 100.f;
+    static constexpr float speed = 250.f;
 
     SDL_FPoint velocity;
 };

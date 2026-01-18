@@ -17,7 +17,7 @@ struct Paddle : GameObject
     static constexpr float width = 50.f;
     static constexpr float height = 100.f;
 
-    float speed = 100.f;
+    float speed = 200.f;
     signed int movement_direction : 2 = 0;
     PlayerController* player_controller;
 };

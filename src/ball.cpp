@@ -41,8 +41,14 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
         float normalized = relativeY / (paddle->rect.h * 0.5f);
         normalized = std::clamp(normalized, -1.0f, 1.0f);
 
-        constexpr float MaxBounceAngle = 75.0f * (M_PI / 180.0f);
-        float angle = normalized * MaxBounceAngle;
+        constexpr float MaxBounceAngle = 60.0f * (M_PI / 180.0f);
+        float angle = 0.f;
+        float threshold = 0.05f; // small tolerance for "center hit"
+        if (std::abs(normalized) < threshold) {
+            angle = RandomAngle(10.f, 20.f);
+        } else {
+            angle = normalized * MaxBounceAngle;
+        }
 
         // Rebuild velocity
         float dir = (velocity.x > 0) ? -1.f : 1.f;

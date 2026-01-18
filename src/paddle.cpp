@@ -23,7 +23,7 @@ void Paddle::OnCollide(GameObject* other, SDL_FRect intersection)
 {
     GameObject::OnCollide(other, intersection);
 
-    if (auto box_collision = dynamic_cast<BoxCollision*>(other); box_collision && player_controller) {
+    if (auto box_collision = dynamic_cast<BoxCollision*>(other); box_collision) {
         if (movement_direction == -1 && intersection.y <= 0) {
             movement_direction = 0;
             rect.y = 0.f;

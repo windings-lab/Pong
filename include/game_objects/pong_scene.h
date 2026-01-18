@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ai_controller.h"
 #include "ball.h"
 #include "box_collision.h"
 #include "paddle.h"
@@ -22,6 +23,7 @@ public:
     Paddle player;
     Paddle bot;
     PlayerController player_controller;
+    AIController ai_controller;
     Ball ball;
 
 private:
