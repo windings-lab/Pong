@@ -1,13 +1,13 @@
 #include "sdl_renderer.h"
 
-#include <SDL3/SDL.h>
+#include "pong_scene.h"
 
 #include <utility>
 
 namespace Pong
 {
-    SDL_Renderer::SDL_Renderer(SDL_Window* window, ::SDL_Renderer* sdl_renderer)
-        : window(window), sdl_renderer(sdl_renderer)
+    SDL_Renderer::SDL_Renderer(::SDL_Renderer* sdl_renderer)
+        : sdl_renderer(sdl_renderer)
     {
     }
     SDL_Renderer::~SDL_Renderer()
@@ -15,8 +15,7 @@ namespace Pong
         if (sdl_renderer) SDL_DestroyRenderer(sdl_renderer);
     }
     SDL_Renderer::SDL_Renderer(SDL_Renderer&& old) noexcept
-        : window(std::exchange(old.window, nullptr))
-        , sdl_renderer(std::exchange(old.sdl_renderer, nullptr))
+        : sdl_renderer(std::exchange(old.sdl_renderer, nullptr))
     {
     }
     SDL_Renderer& SDL_Renderer::operator=(SDL_Renderer&& old) noexcept
@@ -29,15 +28,28 @@ namespace Pong
     {
         return sdl_renderer;
     }
-    void SDL_Renderer::Iterate()
+    void SDL_Renderer::DrawRect(SDL_FRect rect)
     {
+        SDL_SetRenderDrawColor(sdl_renderer, 255, 255, 255, 255);
+        SDL_RenderFillRect(sdl_renderer, &rect);
+    }
+    void SDL_Renderer::Iterate(PongScene& pong_scene)
+    {
+        SDL_SetRenderDrawColor(sdl_renderer, 0, 0, 0, 255);
         SDL_RenderClear(sdl_renderer);
+
+        DrawRect(pong_scene.player.rect);
+        DrawRect(pong_scene.bot.rect);
+
         SDL_RenderPresent(sdl_renderer);
     }
-    void SDL_Renderer::swap(SDL_Renderer& a, SDL_Renderer& b) noexcept
+    void SDL_Renderer::swap(Renderer& a, Renderer& b) noexcept
     {
         using std::swap;
-        swap(a.sdl_renderer, b.sdl_renderer);
-        swap(a.window, b.window);
+
+        auto& a_casted = static_cast<SDL_Renderer&>(a);
+        auto& b_casted = static_cast<SDL_Renderer&>(b);
+
+        swap(a_casted.sdl_renderer, b_casted.sdl_renderer);
     }
 } // namespace Pong

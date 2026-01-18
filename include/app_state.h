@@ -1,5 +1,6 @@
 #pragma once
 #include "gl_context.h"
+#include "pong_scene.h"
 #include "sdl_renderer.h"
 
 #include <optional>
@@ -20,12 +21,20 @@ public:
 
     ~AppState();
 
+    void Iterate();
+
     [[nodiscard]] SDL_Window* Window() const;
-    [[nodiscard]] OpenGL_Context& GLContext();
-    [[nodiscard]] Pong::SDL_Renderer& SDL_Renderer();
+    [[nodiscard]] Renderer* renderer();
 
 private:
+    AppState(SDL_Window* window);
+
     SDL_Window* window;
+
     std::optional<OpenGL_Context> gl_context;
     std::optional<Pong::SDL_Renderer> sdl_renderer;
+
+    Renderer* active_renderer;
+
+    PongScene pong_scene;
 };

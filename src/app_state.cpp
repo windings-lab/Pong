@@ -4,34 +4,42 @@
 
 #include "gl_context.h"
 
-AppState::AppState(SDL_Window* window, OpenGL_Context&& gl_context)
-    : window(window)
-    , gl_context(std::move(gl_context))
-    , sdl_renderer(std::nullopt)
-{
-}
-AppState::AppState(SDL_Window* window, Pong::SDL_Renderer&& sdl_renderer)
+
+AppState::AppState(SDL_Window* window)
     : window(window)
     , gl_context(std::nullopt)
-    , sdl_renderer(std::move(sdl_renderer))
+    , sdl_renderer(std::nullopt)
+    , active_renderer(nullptr)
 {
+}
+
+AppState::AppState(SDL_Window* window, OpenGL_Context&& gl_context)
+    : AppState(window)
+{
+    this->gl_context.emplace(std::move(gl_context));
+    active_renderer = &*this->gl_context;
+}
+AppState::AppState(SDL_Window* window, Pong::SDL_Renderer&& sdl_renderer)
+    : AppState(window)
+{
+    this->sdl_renderer.emplace(std::move(sdl_renderer));
+    active_renderer = &*this->sdl_renderer;
 }
 
 AppState::~AppState()
 {
     if (window) SDL_DestroyWindow(window);
 }
+void AppState::Iterate()
+{
+    active_renderer->Iterate(pong_scene);
+}
 
 SDL_Window* AppState::Window() const
 {
     return window;
 }
-OpenGL_Context& AppState::GLContext()
+Renderer* AppState::renderer()
 {
-    return *gl_context;
+    return active_renderer;
 }
-Pong::SDL_Renderer& AppState::SDL_Renderer()
-{
-    return *sdl_renderer;
-}
-

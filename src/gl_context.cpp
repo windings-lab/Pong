@@ -44,13 +44,21 @@ SDL_GLContext OpenGL_Context::operator*() const
 {
     return gl_context;
 }
-void OpenGL_Context::Iterate()
+void OpenGL_Context::DrawRect(SDL_FRect rect)
+{
+    throw std::runtime_error("Not implemented");
+}
+void OpenGL_Context::Iterate(PongScene&)
 {
     SDL_GL_SwapWindow(window);
 }
-void OpenGL_Context::swap(OpenGL_Context& a, OpenGL_Context& b) noexcept
+void OpenGL_Context::swap(Renderer& a, Renderer& b) noexcept
 {
     using std::swap;
-    swap(a.gl_context, b.gl_context);
-    swap(a.window, b.window);
+
+    auto& a_casted = static_cast<OpenGL_Context&>(a);
+    auto& b_casted = static_cast<OpenGL_Context&>(b);
+
+    swap(a_casted.gl_context, b_casted.gl_context);
+    swap(a_casted.window, b_casted.window);
 }

@@ -1,4 +1,3 @@
-#include <SDL3/SDL.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_main.h>
 
@@ -28,7 +27,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
 
-    *appstate = new AppState(window, Pong::SDL_Renderer(window, renderer));
+    *appstate = new AppState(window, Pong::SDL_Renderer(renderer));
     renderer = nullptr;
     window = nullptr;
 
@@ -54,7 +53,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 {
     auto* state = static_cast<AppState*>(appstate);
 
-    state->SDL_Renderer().Iterate();
+    state->Iterate();
 
     return SDL_APP_CONTINUE;
 }
