@@ -28,7 +28,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     }
 
     auto window = Window(sdl_window);
-    *appstate = static_cast<void*>(new AppState(std::move(window), Pong::SDL_Renderer(sdl_renderer)));
+    *appstate = new AppState(std::move(window), Pong::SDL_Renderer(sdl_renderer));
     sdl_renderer = nullptr;
     sdl_window = nullptr;
 
@@ -38,16 +38,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 {
     auto* state = static_cast<AppState*>(appstate);
-
-    switch (event->type) {
-    case SDL_EVENT_QUIT:
-        return SDL_APP_SUCCESS;
-
-    default:
-        break;
-    }
-
-    return SDL_APP_CONTINUE;
+    return state->HandleEvent(event);
 }
 
 SDL_AppResult SDL_AppIterate(void* appstate)

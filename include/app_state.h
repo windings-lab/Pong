@@ -20,6 +20,7 @@ public:
 
     ~AppState();
 
+    SDL_AppResult HandleEvent(SDL_Event* event);
     void Iterate();
 
     [[nodiscard]] Window& window();
@@ -28,11 +29,13 @@ public:
 private:
     AppState(Window&& window);
 
+    const static Uint64 frequency;
+    Uint64 last_time;
+
     Window m_window;
 
     std::optional<OpenGL_Context> gl_context;
     std::optional<Pong::SDL_Renderer> sdl_renderer;
-
     Renderer* active_renderer;
 
     PongScene pong_scene;

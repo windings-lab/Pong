@@ -4,8 +4,11 @@
 
 #include "rhi/gl_context.h"
 
+const Uint64 AppState::frequency = SDL_GetPerformanceFrequency();
+
 AppState::AppState(Window&& window)
-    : m_window(std::move(window))
+    : last_time(SDL_GetPerformanceCounter())
+    , m_window(std::move(window))
     , gl_context(std::nullopt)
     , sdl_renderer(std::nullopt)
     , active_renderer(nullptr)
@@ -30,8 +33,26 @@ AppState::~AppState()
 {
 
 }
+SDL_AppResult AppState::HandleEvent(SDL_Event* event)
+{
+    switch (event->type) {
+    case SDL_EVENT_QUIT:
+        return SDL_APP_SUCCESS;
+
+    default:
+        break;
+    }
+
+    return SDL_APP_CONTINUE;
+}
 void AppState::Iterate()
 {
+    Uint64 current_time = SDL_GetPerformanceCounter();
+    float dt = static_cast<float>(current_time - last_time) / frequency;
+    last_time = current_time;
+
+    pong_scene.player.rect.y += 50 * dt;
+
     active_renderer->Iterate(pong_scene);
 }
 
