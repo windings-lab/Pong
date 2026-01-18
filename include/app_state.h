@@ -2,16 +2,15 @@
 #include "game_objects/pong_scene.h"
 #include "rhi/gl_context.h"
 #include "rhi/sdl_renderer.h"
+#include "window.h"
 
 #include <optional>
-
-typedef struct SDL_Window SDL_Window;
 
 class AppState
 {
 public:
-    explicit AppState(SDL_Window* window, OpenGL_Context&& gl_context);
-    explicit AppState(SDL_Window* window, Pong::SDL_Renderer&& sdl_renderer);
+    explicit AppState(Window&& window, OpenGL_Context&& gl_context);
+    explicit AppState(Window&& window, Pong::SDL_Renderer&& sdl_renderer);
 
     AppState(const AppState&) = delete;
     AppState& operator=(const AppState&) = delete;
@@ -23,13 +22,13 @@ public:
 
     void Iterate();
 
-    [[nodiscard]] SDL_Window* Window() const;
+    [[nodiscard]] Window& window();
     [[nodiscard]] Renderer* renderer();
 
 private:
-    AppState(SDL_Window* window);
+    AppState(Window&& window);
 
-    SDL_Window* window;
+    Window m_window;
 
     std::optional<OpenGL_Context> gl_context;
     std::optional<Pong::SDL_Renderer> sdl_renderer;

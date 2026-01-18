@@ -1,8 +1,6 @@
 #pragma once
 #include "rhi/renderer.h"
 
-typedef struct SDL_Renderer SDL_Renderer;
-
 namespace Pong
 {
     class SDL_Renderer : public Renderer

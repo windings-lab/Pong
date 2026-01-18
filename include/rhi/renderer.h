@@ -1,6 +1,7 @@
 #pragma once
 
 class PongScene;
+
 struct Renderer
 {
     Renderer() = default;
