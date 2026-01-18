@@ -1,7 +1,12 @@
 #include "game_objects/pong_scene.h"
 
-PongScene::PongScene()
-    : player(SDL_FPoint(0.f, 0.f))
-    , bot(SDL_FPoint(800 - 50.f, 0.f))
+PongScene::PongScene(SDL_FRect constraint)
+    : constraint(constraint)
 {
+    const float constraint_mid_y = constraint.h / 2.f - Paddle::height / 2.f;
+
+    player.rect.y = constraint_mid_y;
+
+    bot.rect.x = constraint.w - Paddle::width;
+    bot.rect.y = constraint_mid_y;
 }

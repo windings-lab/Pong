@@ -19,17 +19,18 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     constexpr int width = 800;
     constexpr int height = 600;
 
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    SDL_CreateWindowAndRenderer(title, width, height, 0, &window, &renderer);
-    if (!window || !renderer) {
+    SDL_Window* sdl_window;
+    SDL_Renderer* sdl_renderer;
+    SDL_CreateWindowAndRenderer(title, width, height, 0, &sdl_window, &sdl_renderer);
+    if (!sdl_window || !sdl_renderer) {
         SDL_Log("%s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
 
-    *appstate = new AppState(window, Pong::SDL_Renderer(renderer));
-    renderer = nullptr;
-    window = nullptr;
+    auto window = Window(sdl_window);
+    *appstate = static_cast<void*>(new AppState(std::move(window), Pong::SDL_Renderer(sdl_renderer)));
+    sdl_renderer = nullptr;
+    sdl_window = nullptr;
 
     return SDL_APP_CONTINUE;
 }
