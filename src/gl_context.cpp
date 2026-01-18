@@ -1,7 +1,7 @@
-#include "gl_context.h"
+#include "rhi/gl_context.h"
 
-#include "SDL3/SDL_video.h"
 #include "SDL3/SDL_opengl.h"
+#include "SDL3/SDL_video.h"
 
 OpenGL_Context::OpenGL_Context(SDL_Window* window)
     : window(window)

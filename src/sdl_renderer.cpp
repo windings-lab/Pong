@@ -1,6 +1,6 @@
-#include "sdl_renderer.h"
+#include "rhi/sdl_renderer.h"
 
-#include "pong_scene.h"
+#include "game_objects/pong_scene.h"
 
 #include <utility>
 

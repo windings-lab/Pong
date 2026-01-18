@@ -1,5 +1,5 @@
 #pragma once
-#include "renderer.h"
+#include "rhi/renderer.h"
 
 typedef struct SDL_Window SDL_Window;
 typedef struct SDL_GLContextState *SDL_GLContext;

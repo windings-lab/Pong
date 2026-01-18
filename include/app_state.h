@@ -1,7 +1,7 @@
 #pragma once
-#include "gl_context.h"
-#include "pong_scene.h"
-#include "sdl_renderer.h"
+#include "game_objects/pong_scene.h"
+#include "rhi/gl_context.h"
+#include "rhi/sdl_renderer.h"
 
 #include <optional>
 

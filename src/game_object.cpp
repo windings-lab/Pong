@@ -1,4 +1,4 @@
-#include "game_object.h"
+#include "game_objects/game_object.h"
 
 GameObject::GameObject(SDL_FRect rect)
     : rect(rect)

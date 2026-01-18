@@ -1,4 +1,4 @@
-#include "pong_scene.h"
+#include "game_objects/pong_scene.h"
 
 PongScene::PongScene()
     : player(SDL_FPoint(0.f, 0.f))

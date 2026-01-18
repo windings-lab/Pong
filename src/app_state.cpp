@@ -2,8 +2,7 @@
 
 #include "SDL3/SDL_video.h"
 
-#include "gl_context.h"
-
+#include "rhi/gl_context.h"
 
 AppState::AppState(SDL_Window* window)
     : window(window)
