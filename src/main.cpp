@@ -15,9 +15,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
 
-    const char* title = "Pong";
-    int width = 800;
-    int height = 600;
+    constexpr const char* title = "Pong";
+    constexpr int width = 800;
+    constexpr int height = 600;
 
     SDL_Window* window;
     SDL_Renderer* renderer;
