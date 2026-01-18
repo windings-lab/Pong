@@ -1,6 +1,8 @@
 #pragma once
 #include "paddle.h"
 
+#include <vector>
+
 struct Renderer;
 
 class PongScene
@@ -10,6 +12,8 @@ public:
 
     PongScene(const PongScene&) = delete;
     PongScene& operator=(const PongScene&) = delete;
+
+    std::vector<GameObject*> game_objects;
 
     Paddle player;
     Paddle bot;

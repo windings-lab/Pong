@@ -38,8 +38,9 @@ namespace Pong
         SDL_SetRenderDrawColor(sdl_renderer, 0, 0, 0, 255);
         SDL_RenderClear(sdl_renderer);
 
-        DrawRect(pong_scene.player.rect);
-        DrawRect(pong_scene.bot.rect);
+        for (auto game_object : pong_scene.game_objects) {
+            DrawRect(game_object->rect);
+        }
 
         SDL_RenderPresent(sdl_renderer);
     }
