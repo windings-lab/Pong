@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ball.h"
 #include "box_collision.h"
 #include "paddle.h"
 #include "player_controller.h"
@@ -21,6 +22,7 @@ public:
     Paddle player;
     Paddle bot;
     PlayerController player_controller;
+    Ball ball;
 
 private:
     BoxCollision constraint;

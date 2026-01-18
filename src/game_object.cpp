@@ -1,7 +1,8 @@
 #include "game_objects/game_object.h"
 
 GameObject::GameObject(::SDL_FRect rect)
-    : rect(rect)
+    : spawn_point(0.f, 0.f)
+    , rect(rect)
     , visible(true)
     , collidable(false)
 {
