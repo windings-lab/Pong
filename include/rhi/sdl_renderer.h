@@ -16,11 +16,13 @@ namespace Pong
 
         void DrawRect(SDL_FRect rect) override;
 
-        void Iterate(PongScene&) override;
+    protected:
+        void BeforeUpdate() override;
+        void AfterUpdate() override;
 
     private:
         void swap(Renderer& a, Renderer& b) noexcept override;
 
-        ::SDL_Renderer* sdl_renderer;
+        ::SDL_Renderer* m_sdl_renderer;
     };
 }

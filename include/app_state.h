@@ -1,16 +1,13 @@
 #pragma once
-#include "game_objects/pong_scene.h"
-#include "rhi/gl_context.h"
-#include "rhi/sdl_renderer.h"
+#include "levels/pong_scene.h"
 #include "window.h"
 
-#include <optional>
+class Renderer;
 
 class AppState
 {
 public:
-    explicit AppState(Window&& window, OpenGL_Context&& gl_context);
-    explicit AppState(Window&& window, Pong::SDL_Renderer&& sdl_renderer);
+    explicit AppState(Window&& window, std::unique_ptr<Renderer> renderer);
 
     AppState(const AppState&) = delete;
     AppState& operator=(const AppState&) = delete;
@@ -20,23 +17,23 @@ public:
 
     ~AppState();
 
+    void OnInitialize();
     SDL_AppResult HandleEvent(SDL_Event* event);
     void Iterate();
 
-    [[nodiscard]] Window& window();
-    [[nodiscard]] Renderer* renderer();
+private:
+    float CalculateDeltaTime();
+    void TickObjects();
+    void ResolveCollisions();
+    void Render();
 
 private:
-    AppState(Window&& window);
-
-    const static Uint64 frequency;
-    Uint64 last_time;
+    const static Uint64 m_frequency;
+    Uint64 m_last_time;
 
     Window m_window;
 
-    std::optional<OpenGL_Context> gl_context;
-    std::optional<Pong::SDL_Renderer> sdl_renderer;
-    Renderer* active_renderer;
+    std::unique_ptr<Renderer> m_renderer;
 
-    PongScene pong_scene;
+    PongScene m_pong_scene;
 };

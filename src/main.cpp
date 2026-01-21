@@ -2,7 +2,7 @@
 #include <SDL3/SDL_main.h>
 
 #include "app_state.h"
-
+#include "rhi/sdl_renderer.h"
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
@@ -28,9 +28,12 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     }
 
     auto window = Window(sdl_window);
-    *appstate = new AppState(std::move(window), Pong::SDL_Renderer(sdl_renderer));
+    auto* as = new AppState(std::move(window), std::make_unique<Pong::SDL_Renderer>(sdl_renderer));
+    *appstate = as;
     sdl_renderer = nullptr;
     sdl_window = nullptr;
+
+    as->OnInitialize();
 
     return SDL_APP_CONTINUE;
 }

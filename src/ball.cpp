@@ -1,25 +1,24 @@
-#include "game_objects/ball.h"
+#include "objects/game_objects/ball.h"
 
-#include "game_objects/box_collision.h"
-#include "game_objects/paddle.h"
+#include "objects/game_objects/paddle.h"
+#include "objects/game_objects/walls.h"
+#include "rhi/renderer.h"
 
 #include <algorithm>
 #include <cmath>
 
-Ball::Ball() : Ball(SDL_FPoint(0.f, 0.f)) {}
-Ball::Ball(SDL_FPoint position)
-    : GameObject(SDL_FRect(position.x, position.y, width, height))
-    , velocity(0.f, 0.f)
+Ball::Ball() : Ball(nullptr) {}
+Ball::Ball(SpawnPoint* spawn_point)
+    : GameObject(spawn_point)
+    , m_velocity(0.f, 0.f)
 {
-    collidable = true;
-    visible = true;
 }
 Ball::~Ball()
 {
 }
-void Ball::Iterate(float dt)
+void Ball::Tick(float dt)
 {
-    GameObject::Iterate(dt);
+    GameObject::Tick(dt);
     Move(dt);
 }
 void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
@@ -28,17 +27,17 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
 
     if (auto paddle = dynamic_cast<Paddle*>(other); paddle) {
         // Push ball outside paddle first
-        if (velocity.x > 0)
-            rect.x -= intersection.w;
+        if (m_velocity.x > 0)
+            position.x -= intersection.w;
         else
-            rect.x += intersection.w;
+            position.x += intersection.w;
 
         // Compute hit position
-        float paddleCenter = paddle->rect.y + paddle->rect.h * 0.5f;
-        float ballCenter   = rect.y + rect.h * 0.5f;
+        float paddleCenter = paddle->position.y + Paddle::height * 0.5f;
+        float ballCenter   = position.y + height * 0.5f;
 
         float relativeY = ballCenter - paddleCenter;
-        float normalized = relativeY / (paddle->rect.h * 0.5f);
+        float normalized = relativeY / (Paddle::height * 0.5f);
         normalized = std::clamp(normalized, -1.0f, 1.0f);
 
         constexpr float MaxBounceAngle = 60.0f * (M_PI / 180.0f);
@@ -51,50 +50,61 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
         }
 
         // Rebuild velocity
-        float dir = (velocity.x > 0) ? -1.f : 1.f;
+        float dir = (m_velocity.x > 0) ? -1.f : 1.f;
 
-        velocity.x = dir * std::cos(angle) * speed;
-        velocity.y = std::sin(angle) * speed;
+        m_velocity.x = dir * std::cos(angle) * speed;
+        m_velocity.y = std::sin(angle) * speed;
     }
-    if (auto wall = dynamic_cast<BoxCollision*>(other); wall) {
+    if (auto wall = dynamic_cast<Walls*>(other); wall) {
+        SDL_FRect bounds = wall->GetCollider();
+
         // Top wall
-        if (rect.y <= 0.f) {
-            rect.y = 0.f;
-            velocity.y = -velocity.y;
+        if (position.y <= 0.f) {
+            position.y = 0.f;
+            m_velocity.y = -m_velocity.y;
         }
 
         // Bottom wall
-        if (rect.y + rect.h > wall->rect.h) {
-            rect.y = wall->rect.h - rect.h;
-            velocity.y = -velocity.y;
+        if (position.y + height > bounds.h) {
+            position.y = bounds.h - height;
+            m_velocity.y = -m_velocity.y;
         }
 
         // Left Paddle lost
         // Right paddle gains a score
-        if (rect.x <= 0.f) {
-            Spawn();
+        if (position.x <= 0.f) {
+            Respawn();
         }
 
         // Right Paddle lost
         // Left paddle gains a score
-        if (rect.x + rect.w >= wall->rect.w) {
-            Spawn();
+        if (position.x + width >= bounds.w) {
+            Respawn();
         }
     }
 
 }
-void Ball::Move(float dt)
+void Ball::Draw(Renderer* renderer)
 {
-    rect.x += velocity.x * dt;
-    rect.y += velocity.y * dt;
+    GameObject::Draw(renderer);
+
+    renderer->DrawRect(SDL_FRect(position.x, position.y, width, height));
 }
-void Ball::Spawn()
+SDL_FRect Ball::GetCollider()
 {
-    rect.x = spawn_point.x;
-    rect.y = spawn_point.y;
+    return SDL_FRect(position.x, position.y, width, height);
+}
+void Ball::Respawn()
+{
+    GameObject::Respawn();
 
     float angle = RandomFloat(-30.f, 30.f) * (M_PI / 180.f);
 
-    velocity.x = RandomDirection() * std::cos(angle) * speed;
-    velocity.y = std::sin(angle) * speed;
+    m_velocity.x = RandomDirection() * std::cos(angle) * speed;
+    m_velocity.y = std::sin(angle) * speed;
+}
+void Ball::Move(float dt)
+{
+    position.x += m_velocity.x * dt;
+    position.y += m_velocity.y * dt;
 }

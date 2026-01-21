@@ -4,10 +4,10 @@
 #include "SDL3/SDL_video.h"
 
 OpenGL_Context::OpenGL_Context(SDL_Window* window)
-    : window(window)
-    , gl_context(SDL_GL_CreateContext(window))
+    : m_window(window)
+    , m_gl_context(SDL_GL_CreateContext(window))
 {
-    if (!gl_context) {
+    if (!m_gl_context) {
         throw std::runtime_error(SDL_GetError());
     }
 
@@ -22,15 +22,15 @@ OpenGL_Context::OpenGL_Context(SDL_Window* window)
 
 OpenGL_Context::~OpenGL_Context()
 {
-    if (gl_context) SDL_GL_DestroyContext(gl_context);
+    if (m_gl_context) SDL_GL_DestroyContext(m_gl_context);
 }
 
 OpenGL_Context::OpenGL_Context(OpenGL_Context&& old) noexcept
-    : window(old.window)
-    , gl_context(old.gl_context)
+    : m_window(old.m_window)
+    , m_gl_context(old.m_gl_context)
 {
-    old.window = nullptr;
-    old.gl_context = nullptr;
+    old.m_window = nullptr;
+    old.m_gl_context = nullptr;
 }
 
 OpenGL_Context& OpenGL_Context::operator=(OpenGL_Context&& old) noexcept
@@ -42,16 +42,13 @@ OpenGL_Context& OpenGL_Context::operator=(OpenGL_Context&& old) noexcept
 
 SDL_GLContext OpenGL_Context::operator*() const
 {
-    return gl_context;
+    return m_gl_context;
 }
 void OpenGL_Context::DrawRect(SDL_FRect rect)
 {
     throw std::runtime_error("Not implemented");
 }
-void OpenGL_Context::Iterate(PongScene&)
-{
-    SDL_GL_SwapWindow(window);
-}
+
 void OpenGL_Context::swap(Renderer& a, Renderer& b) noexcept
 {
     using std::swap;
@@ -59,6 +56,14 @@ void OpenGL_Context::swap(Renderer& a, Renderer& b) noexcept
     auto& a_casted = static_cast<OpenGL_Context&>(a);
     auto& b_casted = static_cast<OpenGL_Context&>(b);
 
-    swap(a_casted.gl_context, b_casted.gl_context);
-    swap(a_casted.window, b_casted.window);
+    swap(a_casted.m_gl_context, b_casted.m_gl_context);
+    swap(a_casted.m_window, b_casted.m_window);
+}
+void OpenGL_Context::BeforeUpdate()
+{
+    throw std::runtime_error("Not implemented");
+}
+void OpenGL_Context::AfterUpdate()
+{
+    throw std::runtime_error("Not implemented");
 }

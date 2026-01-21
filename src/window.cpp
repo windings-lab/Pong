@@ -3,19 +3,19 @@
 #include <utility>
 
 Window::Window(SDL_Window* sdl_window)
-    : sdl_window(sdl_window)
+    : m_sdl_window(sdl_window)
 {
-    SDL_GetWindowSizeInPixels(this->sdl_window, &width, &height);
+    SDL_GetWindowSizeInPixels(this->m_sdl_window, &m_width, &m_height);
 }
 
 Window::~Window()
 {
-    if (sdl_window) SDL_DestroyWindow(sdl_window);
+    if (m_sdl_window) SDL_DestroyWindow(m_sdl_window);
 }
 Window::Window(Window&& old) noexcept
-    : sdl_window(std::exchange(old.sdl_window, nullptr))
-    , width(old.width)
-    , height(old.height)
+    : m_sdl_window(std::exchange(old.m_sdl_window, nullptr))
+    , m_width(old.m_width)
+    , m_height(old.m_height)
 {
 
 }
@@ -28,20 +28,20 @@ Window& Window::operator=(Window&& old) noexcept
 
 SDL_Window* Window::operator*() const
 {
-    return sdl_window;
+    return m_sdl_window;
 }
-int Window::Width() const
+int Window::width() const
 {
-    return width;
+    return m_width;
 }
-int Window::Height() const
+int Window::height() const
 {
-    return height;
+    return m_height;
 }
 void Window::swap(Window& a, Window& b) noexcept
 {
     using std::swap;
-    swap(a.sdl_window, a.sdl_window);
-    swap(a.width, a.width);
-    swap(a.height, a.height);
+    swap(a.m_sdl_window, a.m_sdl_window);
+    swap(a.m_width, a.m_width);
+    swap(a.m_height, a.m_height);
 }
