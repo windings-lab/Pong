@@ -1,5 +1,7 @@
 #include "levels/pong_scene.h"
 
+#include "objects/object_pointer.h"
+
 PongScene::PongScene(SDL_FRect constraint)
     : ball(&ball_spawner)
     , walls(constraint)
@@ -20,23 +22,31 @@ PongScene::PongScene(SDL_FRect constraint)
     ball_spawner.spawn_position.x = ball_x_middle;
     ball_spawner.spawn_position.y = ball_y_middle;
 
-    m_game_objects.push_back(&player);
-    m_game_objects.push_back(&bot);
-    m_game_objects.push_back(&walls);
-    m_game_objects.push_back(&ball);
+    m_game_objects.emplace_back(&player);
+    m_game_objects.emplace_back(&bot);
+    m_game_objects.emplace_back(&walls);
+    m_game_objects.emplace_back(&ball);
 
     m_objects.reserve(m_game_objects.size());
     std::ranges::transform(m_game_objects,
                            std::back_inserter(m_objects),
-                           [](GameObject* go) { return static_cast<Object*>(go); });
-    m_objects.push_back(&ai_controller);
-    m_objects.push_back(&player_controller);
+                           [](ObjectPointer<GameObject>& go) { return go.Cast<Object>(); });
+    m_objects.emplace_back(&ai_controller);
+    m_objects.emplace_back(&player_controller);
 }
-const std::vector<GameObject*>& PongScene::GameObjects() const
+std::vector<ObjectPointer<GameObject>>& PongScene::GameObjects()
 {
     return m_game_objects;
 }
-const std::vector<Object*>& PongScene::Objects() const
+std::vector<ObjectPointer<Object>>& PongScene::Objects()
+{
+    return m_objects;
+}
+const std::vector<ObjectPointer<GameObject>>& PongScene::GameObjects() const
+{
+    return m_game_objects;
+}
+const std::vector<ObjectPointer<Object>>& PongScene::Objects() const
 {
     return m_objects;
 }

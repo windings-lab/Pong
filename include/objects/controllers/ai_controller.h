@@ -8,7 +8,7 @@ class AIController : public Controller
 {
 public:
     AIController();
-    AIController(GameObject* bot);
+    explicit AIController(GameObject* bot);
     ~AIController() override;
 
     void Tick(float dt) override;

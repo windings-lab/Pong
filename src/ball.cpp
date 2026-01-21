@@ -83,7 +83,7 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
     }
 
 }
-void Ball::Draw(Renderer* renderer)
+void Ball::Draw(Renderer* renderer) const
 {
     GameObject::Draw(renderer);
 

@@ -63,8 +63,8 @@ void AppState::ResolveCollisions()
 
     for (size_t i = 0; i < game_objects.size(); ++i) {
         for (size_t j = i + 1; j < game_objects.size(); ++j) {
-            GameObject* a = game_objects[i];
-            GameObject* b = game_objects[j];
+            GameObject* a = *game_objects[i];
+            GameObject* b = *game_objects[j];
 
             SDL_FRect a_collider = a->GetCollider();
             SDL_FRect b_collider = b->GetCollider();

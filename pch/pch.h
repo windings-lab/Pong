@@ -12,3 +12,5 @@
 #include <vector>
 #include <algorithm>
 #include <utility>
+
+#include "objects/object_pointer.h"

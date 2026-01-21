@@ -46,7 +46,7 @@ void Paddle::OnCollide(GameObject* other, SDL_FRect intersection)
         }
     }
 }
-void Paddle::Draw(Renderer* renderer)
+void Paddle::Draw(Renderer* renderer) const
 {
     GameObject::Draw(renderer);
 

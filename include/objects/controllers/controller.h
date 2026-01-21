@@ -1,13 +1,12 @@
 #pragma once
 #include "objects/object.h"
 
-class GameObject;
 class Controller : public Object
 {
 public:
     Controller();
-    explicit Controller(GameObject* game_object);
+    explicit Controller(class GameObject* game_object);
 
 protected:
-    GameObject* m_controllable;
+    ObjectPointer<class GameObject> m_controllable;
 };

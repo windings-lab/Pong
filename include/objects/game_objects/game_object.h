@@ -21,7 +21,7 @@ public:
     virtual void ConsumeInput(int input);
 
     virtual void OnCollide(GameObject* other, SDL_FRect intersection);
-    virtual void Draw(Renderer* renderer);
+    virtual void Draw(Renderer* renderer) const;
 
     virtual SDL_FRect GetCollider();
 
@@ -29,5 +29,5 @@ public:
     bool visible;
 
 protected:
-    SpawnPoint* m_spawner;
+    ObjectPointer<SpawnPoint> m_spawner;
 };

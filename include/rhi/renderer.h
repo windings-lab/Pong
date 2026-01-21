@@ -13,7 +13,7 @@ struct Renderer
 
     virtual ~Renderer() = 0;
 
-    void Iterate(const std::vector<GameObject*>& game_objects);
+    void Iterate(const std::vector<ObjectPointer<GameObject>>& game_objects);
 
     virtual void DrawRect(SDL_FRect) = 0;
 
@@ -24,5 +24,5 @@ protected:
     virtual void swap(Renderer& a, Renderer& b) noexcept = 0;
 
 private:
-    void Update(const std::vector<GameObject*>& game_objects);
+    void Update(const std::vector<ObjectPointer<GameObject>>& game_objects);
 };

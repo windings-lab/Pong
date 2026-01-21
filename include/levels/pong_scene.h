@@ -15,8 +15,11 @@ public:
     PongScene(const PongScene&) = delete;
     PongScene& operator=(const PongScene&) = delete;
 
-    const std::vector<GameObject*>& GameObjects() const;
-    const std::vector<Object*>& Objects() const;
+    std::vector<ObjectPointer<GameObject>>& GameObjects();
+    std::vector<ObjectPointer<Object>>& Objects();
+
+    const std::vector<ObjectPointer<GameObject>>& GameObjects() const;
+    const std::vector<ObjectPointer<Object>>& Objects() const;
 
     Paddle player;
     Paddle bot;
@@ -27,6 +30,6 @@ public:
     AIPaddleController ai_controller;
 
 private:
-    std::vector<GameObject*> m_game_objects;
-    std::vector<Object*> m_objects;
+    std::vector<ObjectPointer<GameObject>> m_game_objects;
+    std::vector<ObjectPointer<Object>> m_objects;
 };

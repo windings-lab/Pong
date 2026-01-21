@@ -8,16 +8,16 @@ Renderer::Renderer()
 }
 Renderer::~Renderer() = default;
 
-void Renderer::Iterate(const std::vector<GameObject*>& game_objects)
+void Renderer::Iterate(const std::vector<ObjectPointer<GameObject>>& game_objects)
 {
     BeforeUpdate();
     Update(game_objects);
     AfterUpdate();
 }
 
-void Renderer::Update(const std::vector<GameObject*>& game_objects)
+void Renderer::Update(const std::vector<ObjectPointer<GameObject>>& game_objects)
 {
-    for (auto game_object : game_objects) {
+    for (auto& game_object : game_objects) {
         game_object->Draw(this);
     }
 }

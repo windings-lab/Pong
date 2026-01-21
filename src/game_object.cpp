@@ -14,10 +14,10 @@ GameObject::GameObject(SpawnPoint* spawn_point)
     : GameObject(SDL_FPoint(0.f, 0.f), spawn_point)
 {
 }
-GameObject::GameObject(SDL_FPoint position, SpawnPoint* spawner)
+GameObject::GameObject(SDL_FPoint position, SpawnPoint* spawn_point)
     : position(position)
     , visible(true)
-    , m_spawner(spawner)
+    , m_spawner(spawn_point)
 {
 }
 GameObject::~GameObject() = default;
@@ -40,7 +40,7 @@ void GameObject::ConsumeInput(int input)
 void GameObject::OnCollide(GameObject* other, SDL_FRect intersection)
 {
 }
-void GameObject::Draw(Renderer* renderer)
+void GameObject::Draw(Renderer* renderer) const
 {
 }
 SDL_FRect GameObject::GetCollider()

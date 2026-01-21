@@ -9,6 +9,6 @@ public:
     void Tick(float dt) override;
 
 private:
-    Paddle* m_controllable_paddle;
-    Ball* m_ball;
+    ObjectPointer<class Paddle> m_controllable_paddle;
+    ObjectPointer<class Ball> m_ball;
 };
