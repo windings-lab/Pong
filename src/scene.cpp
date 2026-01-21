@@ -9,7 +9,7 @@ std::vector<ObjectPointer<GameObject>>& Scene::GameObjects()
 }
 std::vector<ObjectPointer<Object>>& Scene::Objects()
 {
-    return m_objects;
+    return m_objects_cached;
 }
 const std::vector<ObjectPointer<GameObject>>& Scene::GameObjects() const
 {
@@ -17,5 +17,5 @@ const std::vector<ObjectPointer<GameObject>>& Scene::GameObjects() const
 }
 const std::vector<ObjectPointer<Object>>& Scene::Objects() const
 {
-    return m_objects;
+    return m_objects_cached;
 }

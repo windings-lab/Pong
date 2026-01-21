@@ -1,7 +1,8 @@
 #include "app_state.h"
 
-#include "rhi/gl_context.h"
 #include "SDL3/SDL_rect.h"
+#include "objects/game_objects/game_object.h"
+#include "rhi/gl_context.h"
 
 const Uint64 AppState::m_frequency = SDL_GetPerformanceFrequency();
 
