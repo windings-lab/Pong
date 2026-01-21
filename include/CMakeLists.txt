@@ -6,6 +6,7 @@ file(GLOB Pong_INCLUDE_FILES
 	 "${Pong_SOURCE_DIR}/include/objects/*.h"
 	 "${Pong_SOURCE_DIR}/include/objects/controllers/*.h"
 	 "${Pong_SOURCE_DIR}/include/objects/game_objects/*.h"
+	 "${Pong_SOURCE_DIR}/include/levels/*.h"
 )
 target_sources(Pong PRIVATE ${Pong_INCLUDE_FILES})
 target_include_directories(Pong_Headers INTERFACE

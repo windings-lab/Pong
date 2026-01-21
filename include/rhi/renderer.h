@@ -1,9 +1,10 @@
 #pragma once
 
-struct GameObject;
+class GameObject;
 
-struct Renderer
+class Renderer
 {
+public:
     Renderer();
     Renderer(const Renderer&) = delete;
     Renderer& operator=(const Renderer&) = delete;

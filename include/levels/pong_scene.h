@@ -7,19 +7,12 @@
 #include "objects/game_objects/walls.h"
 #include "objects/spawn_point.h"
 
-class PongScene
+#include "scene.h"
+
+class PongScene : public Scene
 {
 public:
     explicit PongScene(SDL_FRect constraint);
-
-    PongScene(const PongScene&) = delete;
-    PongScene& operator=(const PongScene&) = delete;
-
-    std::vector<ObjectPointer<GameObject>>& GameObjects();
-    std::vector<ObjectPointer<Object>>& Objects();
-
-    const std::vector<ObjectPointer<GameObject>>& GameObjects() const;
-    const std::vector<ObjectPointer<Object>>& Objects() const;
 
     Paddle player;
     Paddle bot;
@@ -28,8 +21,4 @@ public:
     Walls walls;
     PaddlePlayerController player_controller;
     AIPaddleController ai_controller;
-
-private:
-    std::vector<ObjectPointer<GameObject>> m_game_objects;
-    std::vector<ObjectPointer<Object>> m_objects;
 };

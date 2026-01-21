@@ -22,6 +22,7 @@ PongScene::PongScene(SDL_FRect constraint)
     ball_spawner.spawn_position.x = ball_x_middle;
     ball_spawner.spawn_position.y = ball_y_middle;
 
+    // Треба ще більшу ієрархію та часу, для автоматизації цього
     m_game_objects.emplace_back(&player);
     m_game_objects.emplace_back(&bot);
     m_game_objects.emplace_back(&walls);
@@ -33,20 +34,6 @@ PongScene::PongScene(SDL_FRect constraint)
                            [](ObjectPointer<GameObject>& go) { return go.Cast<Object>(); });
     m_objects.emplace_back(&ai_controller);
     m_objects.emplace_back(&player_controller);
+    m_objects.emplace_back(&ball_spawner);
 }
-std::vector<ObjectPointer<GameObject>>& PongScene::GameObjects()
-{
-    return m_game_objects;
-}
-std::vector<ObjectPointer<Object>>& PongScene::Objects()
-{
-    return m_objects;
-}
-const std::vector<ObjectPointer<GameObject>>& PongScene::GameObjects() const
-{
-    return m_game_objects;
-}
-const std::vector<ObjectPointer<Object>>& PongScene::Objects() const
-{
-    return m_objects;
-}
+

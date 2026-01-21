@@ -3,7 +3,7 @@
 #include "objects/object.h"
 
 class SpawnPoint;
-struct Renderer;
+class Renderer;
 
 class GameObject : public Object
 {

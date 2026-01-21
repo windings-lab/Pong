@@ -18,6 +18,7 @@ void Renderer::Iterate(const std::vector<ObjectPointer<GameObject>>& game_object
 void Renderer::Update(const std::vector<ObjectPointer<GameObject>>& game_objects)
 {
     for (auto& game_object : game_objects) {
+        if (!game_object->visible) continue;
         game_object->Draw(this);
     }
 }
