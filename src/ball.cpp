@@ -4,7 +4,6 @@
 #include "objects/game_objects/walls.h"
 #include "rhi/renderer.h"
 
-#include <algorithm>
 #include <cmath>
 
 Ball::Ball() : Ball(nullptr) {}

@@ -1,7 +1,5 @@
 #include "rhi/sdl_renderer.h"
 
-#include <utility>
-
 namespace Pong
 {
     SDL_Renderer::SDL_Renderer(::SDL_Renderer* sdl_renderer)

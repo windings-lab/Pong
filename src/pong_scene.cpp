@@ -1,7 +1,5 @@
 #include "levels/pong_scene.h"
 
-#include <algorithm>
-
 PongScene::PongScene(SDL_FRect constraint)
     : ball(&ball_spawner)
     , walls(constraint)

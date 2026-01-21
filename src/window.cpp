@@ -1,7 +1,5 @@
 #include "window.h"
 
-#include <utility>
-
 Window::Window(SDL_Window* sdl_window)
     : m_sdl_window(sdl_window)
 {
