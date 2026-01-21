@@ -14,11 +14,14 @@ public:
 
     void DrawRect(SDL_FRect rect) override;
 
-    void Iterate(PongScene&) override;
-
 private:
     void swap(Renderer& a, Renderer& b) noexcept override;
 
-    SDL_Window* window;
-    SDL_GLContext gl_context;
+protected:
+  void BeforeUpdate() override;
+  void AfterUpdate() override;
+
+private:
+  SDL_Window* m_window;
+    SDL_GLContext m_gl_context;
 };

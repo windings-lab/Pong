@@ -1,21 +1,30 @@
-#include "game_objects/paddle.h"
+#include "objects/game_objects/paddle.h"
 
-#include "game_objects/box_collision.h"
+#include "objects/game_objects/walls.h"
+#include "rhi/renderer.h"
 
 Paddle::Paddle() : Paddle(SDL_FPoint(0.f, 0.f)) {}
 Paddle::Paddle(SDL_FPoint position)
-    : GameObject(SDL_FRect(position.x, position.y, width, height))
-    , player_controller(nullptr)
+    : GameObject(position)
 {
-    collidable = true;
 }
 Paddle::~Paddle()
 {
 
 }
-void Paddle::Iterate(float dt)
+void Paddle::SetMovementDirection(signed int value)
 {
-    GameObject::Iterate(dt);
+    m_movement_direction = value;
+}
+void Paddle::ConsumeInput(int input)
+{
+    GameObject::ConsumeInput(input);
+
+    SetMovementDirection(input);
+}
+void Paddle::Tick(float dt)
+{
+    GameObject::Tick(dt);
 
     Move(dt);
 }
@@ -23,20 +32,32 @@ void Paddle::OnCollide(GameObject* other, SDL_FRect intersection)
 {
     GameObject::OnCollide(other, intersection);
 
-    if (auto box_collision = dynamic_cast<BoxCollision*>(other); box_collision) {
-        if (movement_direction == -1 && intersection.y <= 0) {
-            movement_direction = 0;
-            rect.y = 0.f;
+    if (auto walls = dynamic_cast<Walls*>(other); walls) {
+        SDL_FRect bounds = walls->GetCollider();
+
+        if (m_movement_direction == -1 && position.y <= bounds.y) {
+            m_movement_direction = 0;
+            position.y = 0.f;
         }
 
-        if (movement_direction == 1 && intersection.y >= box_collision->rect.h - rect.h) {
-            movement_direction = 0;
-            rect.y = box_collision->rect.h - rect.h;
+        if (m_movement_direction == 1 && position.y >= (bounds.y + bounds.h) - height) {
+            m_movement_direction = 0;
+            position.y = (bounds.y + bounds.h) - height;
         }
     }
+}
+void Paddle::Draw(Renderer* renderer) const
+{
+    GameObject::Draw(renderer);
+
+    renderer->DrawRect(SDL_FRect(position.x, position.y, width, height));
+}
+SDL_FRect Paddle::GetCollider()
+{
+    return SDL_FRect(position.x, position.y, width, height);
 }
 
 void Paddle::Move(float dt)
 {
-    rect.y += speed * dt * movement_direction;
+    position.y += speed * dt * m_movement_direction;
 }

@@ -1,36 +1,29 @@
 #include "app_state.h"
 
-#include "rhi/gl_context.h"
 #include "SDL3/SDL_rect.h"
+#include "objects/game_objects/game_object.h"
+#include "rhi/gl_context.h"
 
-const Uint64 AppState::frequency = SDL_GetPerformanceFrequency();
+const Uint64 AppState::m_frequency = SDL_GetPerformanceFrequency();
 
-AppState::AppState(Window&& window)
-    : last_time(SDL_GetPerformanceCounter())
+AppState::AppState(Window&& window, std::unique_ptr<Renderer> renderer)
+    : m_last_time(SDL_GetPerformanceCounter())
     , m_window(std::move(window))
-    , gl_context(std::nullopt)
-    , sdl_renderer(std::nullopt)
-    , active_renderer(nullptr)
-    , pong_scene(SDL_FRect(0.f, 0.f, m_window.Width(), m_window.Height()))
+    , m_renderer(std::move(renderer))
+    , m_pong_scene(SDL_FRect(0.f, 0.f, m_window.width(), m_window.height()))
 {
-}
 
-AppState::AppState(Window&& window, OpenGL_Context&& gl_context)
-    : AppState(std::move(window))
-{
-    this->gl_context.emplace(std::move(gl_context));
-    active_renderer = &*this->gl_context;
-}
-AppState::AppState(Window&& window, Pong::SDL_Renderer&& sdl_renderer)
-    : AppState(std::move(window))
-{
-    this->sdl_renderer.emplace(std::move(sdl_renderer));
-    active_renderer = &*this->sdl_renderer;
 }
 
 AppState::~AppState()
 {
 
+}
+void AppState::OnInitialize()
+{
+    for (auto object : m_pong_scene.Objects()) {
+        object->Initialize();
+    }
 }
 SDL_AppResult AppState::HandleEvent(SDL_Event* event)
 {
@@ -46,39 +39,46 @@ SDL_AppResult AppState::HandleEvent(SDL_Event* event)
 }
 void AppState::Iterate()
 {
+    TickObjects();
+    ResolveCollisions();
+    Render();
+}
+float AppState::CalculateDeltaTime()
+{
     Uint64 current_time = SDL_GetPerformanceCounter();
-    float dt = static_cast<float>(current_time - last_time) / frequency;
-    last_time = current_time;
+    float dt = static_cast<float>(current_time - m_last_time) / m_frequency;
+    m_last_time = current_time;
 
-    for (auto game_object : pong_scene.game_objects) {
-        game_object->Iterate(dt);
+    return dt;
+}
+void AppState::TickObjects()
+{
+    float dt = CalculateDeltaTime();
+    for (auto game_object : m_pong_scene.Objects()) {
+        game_object->Tick(dt);
     }
+}
+void AppState::ResolveCollisions()
+{
+    auto& game_objects = m_pong_scene.GameObjects();
 
-    for (size_t i = 0; i < pong_scene.game_objects.size(); ++i) {
-        for (size_t j = i + 1; j < pong_scene.game_objects.size(); ++j) {
+    for (size_t i = 0; i < game_objects.size(); ++i) {
+        for (size_t j = i + 1; j < game_objects.size(); ++j) {
+            GameObject* a = *game_objects[i];
+            GameObject* b = *game_objects[j];
 
-            GameObject* a = pong_scene.game_objects[i];
-            GameObject* b = pong_scene.game_objects[j];
-
-            if (!a->collidable || !b->collidable)
-                continue;
+            SDL_FRect a_collider = a->GetCollider();
+            SDL_FRect b_collider = b->GetCollider();
 
             SDL_FRect intersection;
-            if (SDL_GetRectIntersectionFloat(&a->rect, &b->rect, &intersection)) {
+            if (SDL_GetRectIntersectionFloat(&a_collider, &b_collider, &intersection)) {
                 a->OnCollide(b, intersection);
                 b->OnCollide(a, intersection);
             }
         }
     }
-
-    active_renderer->Iterate(pong_scene);
 }
-
-Window& AppState::window()
+void AppState::Render()
 {
-    return m_window;
-}
-Renderer* AppState::renderer()
-{
-    return active_renderer;
+    m_renderer->Iterate(m_pong_scene.GameObjects());
 }

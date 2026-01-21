@@ -7,3 +7,10 @@
 #include "Pong_utility.h"
 
 #include <stdexcept>
+#include <memory>
+#include <unordered_map>
+#include <vector>
+#include <algorithm>
+#include <utility>
+
+#include "objects/object_pointer.h"

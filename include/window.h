@@ -14,14 +14,14 @@ public:
 
     SDL_Window* operator*() const;
 
-    [[nodiscard]] int Width() const;
-    [[nodiscard]] int Height() const;
+    [[nodiscard]] int width() const;
+    [[nodiscard]] int height() const;
 
 private:
     void swap(Window& a, Window& b) noexcept;
 
-    SDL_Window* sdl_window;
+    SDL_Window* m_sdl_window;
 
-    int width = 0;
-    int height = 0;
+    int m_width;
+    int m_height;
 };
