@@ -5,6 +5,8 @@
 class Paddle : public GameObject
 {
 public:
+    DERIVED_STATIC_CLASS(GameObject)
+
     Paddle();
     explicit Paddle(SDL_FPoint);
     ~Paddle() override;

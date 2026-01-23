@@ -2,10 +2,11 @@
 
 #include "objects/game_objects/game_object.h"
 
-class SpawnPoint;
 class Ball : public GameObject
 {
 public:
+    DERIVED_STATIC_CLASS(GameObject)
+
     Ball();
     explicit Ball(SpawnPoint*);
 

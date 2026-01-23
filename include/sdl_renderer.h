@@ -1,6 +1,6 @@
 #pragma once
 
-class GameObject;
+class Object;
 
 namespace Pong::SDL
 {
@@ -15,7 +15,7 @@ namespace Pong::SDL
 
         SDL_Renderer* operator*() const;
 
-        void Iterate(const std::vector<GameObject*>& game_objects);
+        void Iterate(const std::vector<std::unique_ptr<Object>>& objects);
 
         void DrawRect(SDL_FRect rect);
 
@@ -26,7 +26,7 @@ namespace Pong::SDL
     private:
         void swap(Renderer& a, Renderer& b) noexcept;
 
-        void Update(const std::vector<GameObject*>& game_objects);
+        void Update(const std::vector<std::unique_ptr<Object>>& objects);
 
         SDL_Renderer* m_sdl_renderer;
     };

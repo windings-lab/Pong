@@ -59,13 +59,15 @@ void AppState::TickObjects()
 }
 void AppState::ResolveCollisions()
 {
-    auto game_objects = m_pong_scene.GameObjects();
+    auto& objects = m_pong_scene.Objects();
 
-    for (size_t i = 0; i < game_objects.size(); ++i) {
-        GameObject* a = game_objects[i];
+    for (size_t i = 0; i < objects.size(); ++i) {
+        auto a = objects[i]->Cast<GameObject>();
+        if (!a) continue;
 
-        for (size_t j = i + 1; j < game_objects.size(); ++j) {
-            GameObject* b = game_objects[j];
+        for (size_t j = i + 1; j < objects.size(); ++j) {
+            auto b = objects[j]->Cast<GameObject>();
+            if (!b) continue;
 
             SDL_FRect a_collider = a->GetCollider();
             SDL_FRect b_collider = b->GetCollider();
@@ -80,5 +82,5 @@ void AppState::ResolveCollisions()
 }
 void AppState::Render()
 {
-    m_renderer.Iterate(m_pong_scene.GameObjects());
+    m_renderer.Iterate(m_pong_scene.Objects());
 }

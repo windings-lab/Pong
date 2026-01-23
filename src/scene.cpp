@@ -14,13 +14,9 @@ std::vector<GameObject*> Scene::GameObjects() const
     std::vector<GameObject*> game_objects;
 
     for (const auto& object : m_objects) {
-        auto game_object = dynamic_cast<GameObject*>(object.get());
-
-        if (!game_object) continue;
-
+        auto game_object = object->Cast<GameObject>();
         game_objects.push_back(game_object);
     }
-
     game_objects.shrink_to_fit();
 
     return game_objects;

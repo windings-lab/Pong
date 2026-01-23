@@ -49,15 +49,18 @@ namespace Pong::SDL
 
         swap(a_casted.m_sdl_renderer, b_casted.m_sdl_renderer);
     }
-    void Renderer::Iterate(const std::vector<GameObject*>& game_objects)
+    void Renderer::Iterate(const std::vector<std::unique_ptr<Object>>& objects)
     {
         BeforeUpdate();
-        Update(game_objects);
+        Update(objects);
         AfterUpdate();
     }
-    void Renderer::Update(const std::vector<GameObject*>& game_objects)
+    void Renderer::Update(const std::vector<std::unique_ptr<Object>>& objects)
     {
-        for (auto game_object : game_objects) {
+        for (auto& object : objects) {
+            auto game_object = object->Cast<GameObject>();
+            if (!game_object) continue;
+
             if (!game_object->visible) continue;
             game_object->Draw(this);
         }

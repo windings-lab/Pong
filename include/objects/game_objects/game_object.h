@@ -13,6 +13,8 @@ namespace Pong::SDL
 class GameObject : public Object
 {
 public:
+    DERIVED_STATIC_CLASS(Object)
+
     GameObject();
     explicit GameObject(SDL_FPoint);
     explicit GameObject(SpawnPoint*);

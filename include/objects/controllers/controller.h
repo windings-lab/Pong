@@ -4,6 +4,8 @@
 class Controller : public Object
 {
 public:
+    DERIVED_STATIC_CLASS(Object)
+
     Controller();
     explicit Controller(class GameObject* game_object);
 
