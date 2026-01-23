@@ -1,7 +1,8 @@
 #pragma once
-#include "ai_controller.h"
 
-class AIPaddleController : public AIController
+#include "controller.h"
+
+class AIPaddleController : public Controller
 {
 public:
     explicit AIPaddleController(class Paddle* bot, class Ball* ball);
@@ -9,6 +10,6 @@ public:
     void Tick(float dt) override;
 
 private:
-    ObjectPointer<class Paddle> m_controllable_paddle;
-    ObjectPointer<class Ball> m_ball;
+    Paddle* m_controllable_paddle;
+    Ball* m_ball;
 };

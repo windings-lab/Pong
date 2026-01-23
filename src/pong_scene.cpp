@@ -5,7 +5,6 @@
 #include "objects/game_objects/ball.h"
 #include "objects/game_objects/paddle.h"
 #include "objects/game_objects/walls.h"
-#include "objects/object_pointer.h"
 #include "objects/spawn_point.h"
 
 PongScene::PongScene(SDL_FRect constraint)
@@ -20,9 +19,8 @@ PongScene::PongScene(SDL_FRect constraint)
     const float ball_y_middle = constraint.h / 2.f - Ball::height / 2.f;
     auto ball_spawner = CreateObject<SpawnPoint>(SDL_FPoint(ball_x_middle, ball_y_middle));
 
-    auto ball = CreateObject<Ball>(*ball_spawner);
-    auto walls = CreateObject<Walls>(constraint);
-    auto player_controller = CreateObject<PaddlePlayerController>(*player);
-    auto ai_controller = CreateObject<AIPaddleController>(*bot, *ball);
+    auto ball = CreateObject<Ball>(ball_spawner);
+    CreateObject<Walls>(constraint);
+    CreateObject<PaddlePlayerController>(player);
+    CreateObject<AIPaddleController>(bot, ball);
 }
-

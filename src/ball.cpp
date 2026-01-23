@@ -2,7 +2,7 @@
 
 #include "objects/game_objects/paddle.h"
 #include "objects/game_objects/walls.h"
-#include "rhi/renderer.h"
+#include "sdl_renderer.h"
 
 #include <cmath>
 
@@ -43,7 +43,7 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
         float angle = 0.f;
         float threshold = 0.05f; // small tolerance for "center hit"
         if (std::abs(normalized) < threshold) {
-            angle = Pong::Utility::RandomAngle(10.f, 20.f);
+            angle = RandomAngle(10.f, 20.f);
         } else {
             angle = normalized * MaxBounceAngle;
         }
@@ -83,7 +83,7 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
     }
 
 }
-void Ball::Draw(Renderer* renderer) const
+void Ball::Draw(Pong::SDL::Renderer* renderer) const
 {
     GameObject::Draw(renderer);
 
@@ -97,9 +97,9 @@ void Ball::Respawn()
 {
     GameObject::Respawn();
 
-    float angle = Pong::Utility::RandomFloat(-30.f, 30.f) * (M_PI / 180.f);
+    float angle = RandomFloat(-30.f, 30.f) * (M_PI / 180.f);
 
-    m_velocity.x = Pong::Utility::RandomDirection() * std::cos(angle) * speed;
+    m_velocity.x = RandomDirection() * std::cos(angle) * speed;
     m_velocity.y = std::sin(angle) * speed;
 }
 void Ball::Move(float dt)

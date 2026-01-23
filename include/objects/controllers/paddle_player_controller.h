@@ -1,7 +1,8 @@
 #pragma once
-#include "player_controller.h"
 
-class PaddlePlayerController : public PlayerController
+#include "controller.h"
+
+class PaddlePlayerController : public Controller
 {
 public:
     explicit PaddlePlayerController(GameObject* player);

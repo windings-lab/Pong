@@ -21,7 +21,7 @@ public:
     void ConsumeInput(int input) override;
     void Tick(float dt) override;
     void OnCollide(GameObject* other, SDL_FRect intersection) override;
-    void Draw(Renderer* renderer) const override;
+    void Draw(Pong::SDL::Renderer* renderer) const override;
 
     SDL_FRect GetCollider() override;
     /* GameObject Overrides */

@@ -1,50 +1,65 @@
-#include "rhi/sdl_renderer.h"
+#include "sdl_renderer.h"
 
-namespace Pong
+#include "objects/game_objects/game_object.h"
+
+namespace Pong::SDL
 {
-    SDL_Renderer::SDL_Renderer(::SDL_Renderer* sdl_renderer)
+    Renderer::Renderer(SDL_Renderer* sdl_renderer)
         : m_sdl_renderer(sdl_renderer)
     {
     }
-    SDL_Renderer::~SDL_Renderer()
+    Renderer::~Renderer()
     {
         if (m_sdl_renderer) SDL_DestroyRenderer(m_sdl_renderer);
     }
-    SDL_Renderer::SDL_Renderer(SDL_Renderer&& old) noexcept
+    Renderer::Renderer(Renderer&& old) noexcept
         : m_sdl_renderer(std::exchange(old.m_sdl_renderer, nullptr))
     {
     }
-    SDL_Renderer& SDL_Renderer::operator=(SDL_Renderer&& old) noexcept
+    Renderer& Renderer::operator=(Renderer&& old) noexcept
     {
-        SDL_Renderer temp(std::move(old));
+        Renderer temp(std::move(old));
         swap(*this, temp);
         return *this;
     }
-    ::SDL_Renderer* SDL_Renderer::operator*() const
+    SDL_Renderer* Renderer::operator*() const
     {
         return m_sdl_renderer;
     }
-    void SDL_Renderer::DrawRect(SDL_FRect rect)
+    void Renderer::DrawRect(SDL_FRect rect)
     {
         SDL_SetRenderDrawColor(m_sdl_renderer, 255, 255, 255, 255);
         SDL_RenderFillRect(m_sdl_renderer, &rect);
     }
-    void SDL_Renderer::BeforeUpdate()
+    void Renderer::BeforeUpdate()
     {
         SDL_SetRenderDrawColor(m_sdl_renderer, 0, 0, 0, 255);
         SDL_RenderClear(m_sdl_renderer);
     }
-    void SDL_Renderer::AfterUpdate()
+    void Renderer::AfterUpdate()
     {
         SDL_RenderPresent(m_sdl_renderer);
     }
-    void SDL_Renderer::swap(Renderer& a, Renderer& b) noexcept
+    void Renderer::swap(Renderer& a, Renderer& b) noexcept
     {
         using std::swap;
 
-        auto& a_casted = static_cast<SDL_Renderer&>(a);
-        auto& b_casted = static_cast<SDL_Renderer&>(b);
+        auto& a_casted = static_cast<Renderer&>(a);
+        auto& b_casted = static_cast<Renderer&>(b);
 
         swap(a_casted.m_sdl_renderer, b_casted.m_sdl_renderer);
+    }
+    void Renderer::Iterate(const std::vector<GameObject*>& game_objects)
+    {
+        BeforeUpdate();
+        Update(game_objects);
+        AfterUpdate();
+    }
+    void Renderer::Update(const std::vector<GameObject*>& game_objects)
+    {
+        for (auto game_object : game_objects) {
+            if (!game_object->visible) continue;
+            game_object->Draw(this);
+        }
     }
 } // namespace Pong

@@ -3,7 +3,12 @@
 #include "objects/object.h"
 
 class SpawnPoint;
-class Renderer;
+
+namespace Pong::SDL
+{
+    class Renderer;
+}
+
 
 class GameObject : public Object
 {
@@ -21,7 +26,7 @@ public:
     virtual void ConsumeInput(int input);
 
     virtual void OnCollide(GameObject* other, SDL_FRect intersection);
-    virtual void Draw(Renderer* renderer) const;
+    virtual void Draw(Pong::SDL::Renderer* renderer) const;
 
     virtual SDL_FRect GetCollider();
 
@@ -29,5 +34,5 @@ public:
     bool visible;
 
 protected:
-    ObjectPointer<SpawnPoint> m_spawner;
+    SpawnPoint* m_spawner;
 };

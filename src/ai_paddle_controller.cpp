@@ -4,14 +4,14 @@
 #include "objects/game_objects/paddle.h"
 
 AIPaddleController::AIPaddleController(Paddle* bot, Ball* ball)
-    : AIController(static_cast<GameObject*>(bot))
+    : Controller(static_cast<GameObject*>(bot))
     , m_controllable_paddle(bot)
     , m_ball(ball)
 {
 }
 void AIPaddleController::Tick(float dt)
 {
-    AIController::Tick(dt);
+    Controller::Tick(dt);
 
     if (!m_controllable_paddle || !m_ball) return;
 

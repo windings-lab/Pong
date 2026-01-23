@@ -1,5 +1,7 @@
 #pragma once
+
 #include "levels/pong_scene.h"
+#include "sdl_renderer.h"
 #include "window.h"
 
 class Renderer;
@@ -7,7 +9,7 @@ class Renderer;
 class AppState
 {
 public:
-    explicit AppState(Window&& window, std::unique_ptr<Renderer> renderer);
+    explicit AppState(Window&& window, Pong::SDL::Renderer&& renderer);
 
     AppState(const AppState&) = delete;
     AppState& operator=(const AppState&) = delete;
@@ -33,7 +35,7 @@ private:
 
     Window m_window;
 
-    std::unique_ptr<Renderer> m_renderer;
+    Pong::SDL::Renderer m_renderer;
 
     PongScene m_pong_scene;
 };

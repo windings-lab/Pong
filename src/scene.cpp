@@ -1,21 +1,27 @@
 #include "levels/scene.h"
 
+#include "objects/game_objects/game_object.h"
+
 Scene::Scene()
 {
 }
-std::vector<ObjectPointer<GameObject>>& Scene::GameObjects()
+const std::vector<std::unique_ptr<Object>>& Scene::Objects() const
 {
-    return m_game_objects;
+    return m_objects;
 }
-std::vector<ObjectPointer<Object>>& Scene::Objects()
+std::vector<GameObject*> Scene::GameObjects() const
 {
-    return m_objects_cached;
-}
-const std::vector<ObjectPointer<GameObject>>& Scene::GameObjects() const
-{
-    return m_game_objects;
-}
-const std::vector<ObjectPointer<Object>>& Scene::Objects() const
-{
-    return m_objects_cached;
+    std::vector<GameObject*> game_objects;
+
+    for (const auto& object : m_objects) {
+        auto game_object = dynamic_cast<GameObject*>(object.get());
+
+        if (!game_object) continue;
+
+        game_objects.push_back(game_object);
+    }
+
+    game_objects.shrink_to_fit();
+
+    return game_objects;
 }

@@ -1,7 +1,7 @@
 #include "objects/game_objects/paddle.h"
 
 #include "objects/game_objects/walls.h"
-#include "rhi/renderer.h"
+#include "sdl_renderer.h"
 
 Paddle::Paddle() : Paddle(SDL_FPoint(0.f, 0.f)) {}
 Paddle::Paddle(SDL_FPoint position)
@@ -46,7 +46,7 @@ void Paddle::OnCollide(GameObject* other, SDL_FRect intersection)
         }
     }
 }
-void Paddle::Draw(Renderer* renderer) const
+void Paddle::Draw(Pong::SDL::Renderer* renderer) const
 {
     GameObject::Draw(renderer);
 

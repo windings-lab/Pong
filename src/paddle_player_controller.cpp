@@ -2,12 +2,12 @@
 
 #include "objects/game_objects/game_object.h"
 PaddlePlayerController::PaddlePlayerController(GameObject* player)
-    : PlayerController(player)
+    : Controller(player)
 {
 }
 void PaddlePlayerController::Tick(float dt)
 {
-    PlayerController::Tick(dt);
+    Controller::Tick(dt);
 
     if (!m_controllable) return;
 

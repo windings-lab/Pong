@@ -2,11 +2,10 @@
 
 #include "SDL3/SDL_rect.h"
 #include "objects/game_objects/game_object.h"
-#include "rhi/gl_context.h"
 
 const Uint64 AppState::m_frequency = SDL_GetPerformanceFrequency();
 
-AppState::AppState(Window&& window, std::unique_ptr<Renderer> renderer)
+AppState::AppState(Window&& window, Pong::SDL::Renderer&& renderer)
     : m_last_time(SDL_GetPerformanceCounter())
     , m_window(std::move(window))
     , m_renderer(std::move(renderer))
@@ -21,7 +20,7 @@ AppState::~AppState()
 }
 void AppState::OnInitialize()
 {
-    for (auto object : m_pong_scene.Objects()) {
+    for (auto& object : m_pong_scene.Objects()) {
         object->Initialize();
     }
 }
@@ -54,18 +53,19 @@ float AppState::CalculateDeltaTime()
 void AppState::TickObjects()
 {
     float dt = CalculateDeltaTime();
-    for (auto game_object : m_pong_scene.Objects()) {
+    for (auto& game_object : m_pong_scene.Objects()) {
         game_object->Tick(dt);
     }
 }
 void AppState::ResolveCollisions()
 {
-    auto& game_objects = m_pong_scene.GameObjects();
+    auto game_objects = m_pong_scene.GameObjects();
 
     for (size_t i = 0; i < game_objects.size(); ++i) {
+        GameObject* a = game_objects[i];
+
         for (size_t j = i + 1; j < game_objects.size(); ++j) {
-            GameObject* a = *game_objects[i];
-            GameObject* b = *game_objects[j];
+            GameObject* b = game_objects[j];
 
             SDL_FRect a_collider = a->GetCollider();
             SDL_FRect b_collider = b->GetCollider();
@@ -80,5 +80,5 @@ void AppState::ResolveCollisions()
 }
 void AppState::Render()
 {
-    m_renderer->Iterate(m_pong_scene.GameObjects());
+    m_renderer.Iterate(m_pong_scene.GameObjects());
 }

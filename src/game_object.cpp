@@ -40,7 +40,7 @@ void GameObject::ConsumeInput(int input)
 void GameObject::OnCollide(GameObject* other, SDL_FRect intersection)
 {
 }
-void GameObject::Draw(Renderer* renderer) const
+void GameObject::Draw(Pong::SDL::Renderer* renderer) const
 {
 }
 SDL_FRect GameObject::GetCollider()

@@ -8,5 +8,5 @@ public:
     explicit Controller(class GameObject* game_object);
 
 protected:
-    ObjectPointer<class GameObject> m_controllable;
+    GameObject* m_controllable;
 };
