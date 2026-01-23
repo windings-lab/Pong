@@ -17,13 +17,11 @@ public:
 
     GameObject();
     explicit GameObject(SDL_FPoint);
-    explicit GameObject(SpawnPoint*);
-    explicit GameObject(SDL_FPoint, SpawnPoint*);
     ~GameObject() override;
 
     void Initialize() override;
 
-    virtual void Respawn();
+    virtual void OnRespawn();
 
     virtual void ConsumeInput(int input);
 
@@ -34,7 +32,4 @@ public:
 
     SDL_FPoint position;
     bool visible;
-
-protected:
-    SpawnPoint* m_spawner;
 };

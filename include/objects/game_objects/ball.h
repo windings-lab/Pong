@@ -7,9 +7,6 @@ class Ball : public GameObject
 public:
     DERIVED_STATIC_CLASS(GameObject)
 
-    Ball();
-    explicit Ball(SpawnPoint*);
-
     ~Ball() override;
     void Tick(float dt) override;
     void OnCollide(GameObject* other, SDL_FRect intersection) override;
@@ -18,7 +15,7 @@ public:
 
     SDL_FRect GetCollider() override;
 
-    void Respawn() override;
+    void OnRespawn() override;
 
     constexpr static float width = 25;
     constexpr static float height = 25.f;
@@ -28,5 +25,5 @@ public:
 private:
     void Move(float dt);
 
-    SDL_FPoint m_velocity;
+    SDL_FPoint m_velocity{0.f, 0.f};
 };

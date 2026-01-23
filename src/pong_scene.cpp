@@ -15,11 +15,7 @@ PongScene::PongScene(SDL_FRect constraint)
     auto bot = CreateObject<Paddle>(SDL_FPoint(constraint.w - Paddle::width, paddle_middle_height));
     bot->speed = 100.f;
 
-    const float ball_x_middle = constraint.w / 2.f - Ball::width / 2.f;
-    const float ball_y_middle = constraint.h / 2.f - Ball::height / 2.f;
-    auto ball_spawner = CreateObject<SpawnPoint>(SDL_FPoint(ball_x_middle, ball_y_middle));
-
-    auto ball = CreateObject<Ball>(ball_spawner);
+    auto ball = CreateObject<Ball>();
     CreateObject<Walls>(constraint);
     CreateObject<PaddlePlayerController>(player);
     CreateObject<AIPaddleController>(bot, ball);

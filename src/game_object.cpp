@@ -7,17 +7,8 @@ GameObject::GameObject()
 {
 }
 GameObject::GameObject(SDL_FPoint position)
-    : GameObject(position, nullptr)
-{
-}
-GameObject::GameObject(SpawnPoint* spawn_point)
-    : GameObject(SDL_FPoint(0.f, 0.f), spawn_point)
-{
-}
-GameObject::GameObject(SDL_FPoint position, SpawnPoint* spawn_point)
     : position(position)
     , visible(true)
-    , m_spawner(spawn_point)
 {
 }
 GameObject::~GameObject() = default;
@@ -25,13 +16,10 @@ void GameObject::Initialize()
 {
     Object::Initialize();
 
-    Respawn();
+    OnRespawn();
 }
-void GameObject::Respawn()
+void GameObject::OnRespawn()
 {
-    if (!m_spawner) return;
-
-    position = m_spawner->spawn_position;
 }
 
 void GameObject::ConsumeInput(int input)

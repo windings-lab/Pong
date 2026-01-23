@@ -6,12 +6,6 @@
 
 #include <cmath>
 
-Ball::Ball() : Ball(nullptr) {}
-Ball::Ball(SpawnPoint* spawn_point)
-    : GameObject(spawn_point)
-    , m_velocity(0.f, 0.f)
-{
-}
 Ball::~Ball()
 {
 }
@@ -39,7 +33,7 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
         float normalized = relativeY / (Paddle::height * 0.5f);
         normalized = std::clamp(normalized, -1.0f, 1.0f);
 
-        constexpr float MaxBounceAngle = 60.0f * (M_PI / 180.0f);
+        constexpr float MaxBounceAngle = 60.0f * (std::numbers::pi / 180.0f);
         float angle = 0.f;
         float threshold = 0.05f; // small tolerance for "center hit"
         if (std::abs(normalized) < threshold) {
@@ -72,13 +66,13 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
         // Left Paddle lost
         // Right paddle gains a score
         if (position.x <= 0.f) {
-            Respawn();
+            OnRespawn();
         }
 
         // Right Paddle lost
         // Left paddle gains a score
         if (position.x + width >= bounds.w) {
-            Respawn();
+            OnRespawn();
         }
     }
 
@@ -93,11 +87,11 @@ SDL_FRect Ball::GetCollider()
 {
     return SDL_FRect(position.x, position.y, width, height);
 }
-void Ball::Respawn()
+void Ball::OnRespawn()
 {
-    GameObject::Respawn();
+    GameObject::OnRespawn();
 
-    float angle = RandomFloat(-30.f, 30.f) * (M_PI / 180.f);
+    float angle = RandomFloat(-30.f, 30.f) * (std::numbers::pi / 180.f);
 
     m_velocity.x = RandomDirection() * std::cos(angle) * speed;
     m_velocity.y = std::sin(angle) * speed;
