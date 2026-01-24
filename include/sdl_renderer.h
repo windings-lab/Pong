@@ -19,14 +19,12 @@ namespace Pong::SDL
 
         void DrawRect(SDL_FRect rect);
 
-    protected:
-        void BeforeUpdate();
-        void AfterUpdate();
-
     private:
-        void swap(Renderer& a, Renderer& b) noexcept;
+        void BeginFrame();
+        void Draw(const std::vector<std::unique_ptr<Object>>& objects);
+        void EndFrame();
 
-        void Update(const std::vector<std::unique_ptr<Object>>& objects);
+        void swap(Renderer& a, Renderer& b) noexcept;
 
         SDL_Renderer* m_sdl_renderer;
     };

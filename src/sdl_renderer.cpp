@@ -31,12 +31,12 @@ namespace Pong::SDL
         SDL_SetRenderDrawColor(m_sdl_renderer, 255, 255, 255, 255);
         SDL_RenderFillRect(m_sdl_renderer, &rect);
     }
-    void Renderer::BeforeUpdate()
+    void Renderer::BeginFrame()
     {
         SDL_SetRenderDrawColor(m_sdl_renderer, 0, 0, 0, 255);
         SDL_RenderClear(m_sdl_renderer);
     }
-    void Renderer::AfterUpdate()
+    void Renderer::EndFrame()
     {
         SDL_RenderPresent(m_sdl_renderer);
     }
@@ -49,11 +49,11 @@ namespace Pong::SDL
     }
     void Renderer::Iterate(const std::vector<std::unique_ptr<Object>>& objects)
     {
-        BeforeUpdate();
-        Update(objects);
-        AfterUpdate();
+        BeginFrame();
+        Draw(objects);
+        EndFrame();
     }
-    void Renderer::Update(const std::vector<std::unique_ptr<Object>>& objects)
+    void Renderer::Draw(const std::vector<std::unique_ptr<Object>>& objects)
     {
         for (auto& object : objects) {
             auto game_object = object->Cast<GameObject>();
