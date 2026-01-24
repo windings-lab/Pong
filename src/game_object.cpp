@@ -16,9 +16,9 @@ void GameObject::Initialize()
 {
     Object::Initialize();
 
-    OnRespawn();
+    Respawn();
 }
-void GameObject::OnRespawn()
+void GameObject::Respawn()
 {
 }
 

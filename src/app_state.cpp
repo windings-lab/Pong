@@ -1,15 +1,13 @@
 #include "app_state.h"
 
 #include "SDL3/SDL_rect.h"
+#include "levels/pong_level.h"
 #include "objects/game_objects/game_object.h"
 
-const Uint64 AppState::m_frequency = SDL_GetPerformanceFrequency();
-
 AppState::AppState(Window&& window, Pong::SDL::Renderer&& renderer)
-    : m_last_time(SDL_GetPerformanceCounter())
-    , m_window(std::move(window))
+    : m_window(std::move(window))
     , m_renderer(std::move(renderer))
-    , m_pong_scene(SDL_FRect(0.f, 0.f, m_window.width(), m_window.height()))
+    , m_game_state(std::make_unique<LPong>(SDL_FRect(0.f, 0.f, m_window.width(), m_window.height())))
 {
 
 }
@@ -18,11 +16,9 @@ AppState::~AppState()
 {
 
 }
-void AppState::OnInitialize()
+void AppState::Initialize()
 {
-    for (auto& object : m_pong_scene.Objects()) {
-        object->Initialize();
-    }
+    m_game_state.Initialize();
 }
 SDL_AppResult AppState::HandleEvent(SDL_Event* event)
 {
@@ -38,28 +34,14 @@ SDL_AppResult AppState::HandleEvent(SDL_Event* event)
 }
 void AppState::Iterate()
 {
-    TickObjects();
+    m_game_state.Iterate();
     ResolveCollisions();
     Render();
 }
-float AppState::CalculateDeltaTime()
-{
-    Uint64 current_time = SDL_GetPerformanceCounter();
-    float dt = static_cast<float>(current_time - m_last_time) / m_frequency;
-    m_last_time = current_time;
 
-    return dt;
-}
-void AppState::TickObjects()
-{
-    float dt = CalculateDeltaTime();
-    for (auto& game_object : m_pong_scene.Objects()) {
-        game_object->Tick(dt);
-    }
-}
 void AppState::ResolveCollisions()
 {
-    auto& objects = m_pong_scene.Objects();
+    auto& objects = m_game_state.Objects();
 
     for (size_t i = 0; i < objects.size(); ++i) {
         auto a = objects[i]->Cast<GameObject>();
@@ -82,5 +64,5 @@ void AppState::ResolveCollisions()
 }
 void AppState::Render()
 {
-    m_renderer.Iterate(m_pong_scene.Objects());
+    m_renderer.Iterate(m_game_state.Objects());
 }

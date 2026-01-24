@@ -21,7 +21,7 @@ public:
 
     void Initialize() override;
 
-    virtual void OnRespawn();
+    virtual void Respawn();
 
     virtual void ConsumeInput(int input);
 

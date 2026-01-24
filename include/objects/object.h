@@ -1,5 +1,7 @@
 #pragma once
 
+class Level;
+
 class Object
 {
 public:
@@ -34,4 +36,10 @@ public:
 
     virtual void Initialize();
     virtual void Tick(float dt);
+
+    void SetLevel(Level* level);
+    SDL_FRect GetLevelBounds() const;
+
+private:
+    Level* m_level = nullptr;
 };

@@ -8,6 +8,7 @@ public:
     DERIVED_STATIC_CLASS(GameObject)
 
     ~Ball() override;
+    void Initialize() override;
     void Tick(float dt) override;
     void OnCollide(GameObject* other, SDL_FRect intersection) override;
 
@@ -15,7 +16,7 @@ public:
 
     SDL_FRect GetCollider() override;
 
-    void OnRespawn() override;
+    void Respawn() override;
 
     constexpr static float width = 25;
     constexpr static float height = 25.f;

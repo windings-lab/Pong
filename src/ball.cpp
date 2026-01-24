@@ -9,6 +9,12 @@
 Ball::~Ball()
 {
 }
+void Ball::Initialize()
+{
+    GameObject::Initialize();
+
+    Respawn();
+}
 void Ball::Tick(float dt)
 {
     GameObject::Tick(dt);
@@ -66,13 +72,13 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
         // Left Paddle lost
         // Right paddle gains a score
         if (position.x <= 0.f) {
-            OnRespawn();
+            Respawn();
         }
 
         // Right Paddle lost
         // Left paddle gains a score
         if (position.x + width >= bounds.w) {
-            OnRespawn();
+            Respawn();
         }
     }
 
@@ -87,9 +93,13 @@ SDL_FRect Ball::GetCollider()
 {
     return SDL_FRect(position.x, position.y, width, height);
 }
-void Ball::OnRespawn()
+void Ball::Respawn()
 {
-    GameObject::OnRespawn();
+    GameObject::Respawn();
+
+    SDL_FRect level_bounds = GetLevelBounds();
+    position.x = level_bounds.w / 2.f - width / 2.f;
+    position.y = level_bounds.h / 2.f - height / 2.f;
 
     float angle = RandomFloat(-30.f, 30.f) * (std::numbers::pi / 180.f);
 
