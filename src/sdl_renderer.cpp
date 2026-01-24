@@ -28,12 +28,15 @@ namespace Pong::SDL
     }
     void Renderer::DrawRect(SDL_FRect rect)
     {
-        SDL_SetRenderDrawColor(m_sdl_renderer, 255, 255, 255, 255);
         SDL_RenderFillRect(m_sdl_renderer, &rect);
+    }
+    void Renderer::SetColor(SDL_Color color)
+    {
+        SDL_SetRenderDrawColor(m_sdl_renderer, color.r, color.g, color.b, color.a);
     }
     void Renderer::BeginFrame()
     {
-        SDL_SetRenderDrawColor(m_sdl_renderer, 0, 0, 0, 255);
+        SetColor({0, 0, 0, 255});
         SDL_RenderClear(m_sdl_renderer);
     }
     void Renderer::EndFrame()

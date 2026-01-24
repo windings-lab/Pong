@@ -12,6 +12,8 @@ Ball::Ball()
     m_collider.h = height;
 
     m_speed = 250.f;
+
+    m_color = {255, 255, 0, 255};
 }
 Ball::~Ball()
 {

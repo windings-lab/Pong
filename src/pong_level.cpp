@@ -18,7 +18,10 @@ void LPong::Populate(GameState* gs)
     const float paddle_middle_height = m_bounds.h / 2.f - Paddle::height / 2.f;
 
     auto player = gs->CreateObject<Paddle>(SDL_FPoint(0.f, paddle_middle_height));
+    player->SetColor({0, 255, 0, 255});
+
     auto bot = gs->CreateObject<Paddle>(SDL_FPoint(m_bounds.w - Paddle::width, paddle_middle_height));
+    bot->SetColor({255, 0, 0, 255});
     bot->SetSpeed(100.f);
 
     auto ball = gs->CreateObject<Ball>();

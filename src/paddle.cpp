@@ -10,6 +10,8 @@ Paddle::Paddle(SDL_FPoint position)
     m_collider.w = width;
     m_collider.h = height;
     m_speed = 200.f;
+
+    m_color = {255, 255, 255, 255};
 }
 Paddle::~Paddle()
 {

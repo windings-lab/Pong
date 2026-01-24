@@ -29,7 +29,9 @@ public:
 
     SDL_FRect GetCollider();
     SDL_FPoint GetPosition() const;
+
     bool IsVisible() const;
+    void SetColor(SDL_Color color);
 
     void SetVelocity(SDL_FPoint velocity);
     void SetSpeed(float speed);
@@ -37,6 +39,8 @@ public:
 protected:
     SDL_FPoint m_position;
     SDL_FRect m_collider;
+
+    SDL_Color m_color;
     bool m_visible;
 
     float m_speed;

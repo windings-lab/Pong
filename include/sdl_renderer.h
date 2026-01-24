@@ -18,6 +18,7 @@ namespace Pong::SDL
         void Iterate(const std::vector<std::unique_ptr<Object>>& objects);
 
         void DrawRect(SDL_FRect rect);
+        void SetColor(SDL_Color color);
 
     private:
         void BeginFrame();
