@@ -19,7 +19,7 @@ void LPong::Populate(GameState* gs)
 
     auto player = gs->CreateObject<Paddle>(SDL_FPoint(0.f, paddle_middle_height));
     auto bot = gs->CreateObject<Paddle>(SDL_FPoint(m_bounds.w - Paddle::width, paddle_middle_height));
-    bot->speed = 100.f;
+    bot->SetSpeed(100.f);
 
     auto ball = gs->CreateObject<Ball>();
     gs->CreateObject<Walls>(m_bounds);

@@ -61,7 +61,7 @@ namespace Pong::SDL
             auto game_object = object->Cast<GameObject>();
             if (!game_object) continue;
 
-            if (!game_object->visible) continue;
+            if (!game_object->IsVisible()) continue;
             game_object->Draw(this);
         }
     }

@@ -7,42 +7,29 @@ Paddle::Paddle() : Paddle(SDL_FPoint(0.f, 0.f)) {}
 Paddle::Paddle(SDL_FPoint position)
     : GameObject(position)
 {
+    m_collider.w = width;
+    m_collider.h = height;
+    m_speed = 200.f;
 }
 Paddle::~Paddle()
 {
 
 }
-void Paddle::SetMovementDirection(signed int value)
-{
-    m_movement_direction = value;
-}
-void Paddle::ConsumeInput(int input)
-{
-    GameObject::ConsumeInput(input);
-
-    SetMovementDirection(input);
-}
-void Paddle::Tick(float dt)
-{
-    GameObject::Tick(dt);
-
-    Move(dt);
-}
 void Paddle::OnCollide(GameObject* other, SDL_FRect intersection)
 {
     GameObject::OnCollide(other, intersection);
 
-    if (auto walls = dynamic_cast<Walls*>(other); walls) {
+    if (auto walls = other->Cast<Walls>(); walls) {
         SDL_FRect bounds = walls->GetCollider();
 
-        if (m_movement_direction == -1 && position.y <= bounds.y) {
-            m_movement_direction = 0;
-            position.y = 0.f;
+        if (m_velocity.y == -1 && m_position.y <= bounds.y) {
+            m_velocity.y = 0;
+            m_position.y = 0.f;
         }
 
-        if (m_movement_direction == 1 && position.y >= (bounds.y + bounds.h) - height) {
-            m_movement_direction = 0;
-            position.y = (bounds.y + bounds.h) - height;
+        if (m_velocity.y == 1 && m_position.y >= (bounds.y + bounds.h) - height) {
+            m_velocity.y = 0;
+            m_position.y = (bounds.y + bounds.h) - height;
         }
     }
 }
@@ -50,14 +37,5 @@ void Paddle::Draw(Pong::SDL::Renderer* renderer) const
 {
     GameObject::Draw(renderer);
 
-    renderer->DrawRect(SDL_FRect(position.x, position.y, width, height));
-}
-SDL_FRect Paddle::GetCollider()
-{
-    return SDL_FRect(position.x, position.y, width, height);
-}
-
-void Paddle::Move(float dt)
-{
-    position.y += speed * dt * m_movement_direction;
+    renderer->DrawRect(SDL_FRect(m_position.x, m_position.y, width, height));
 }

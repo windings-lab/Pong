@@ -12,9 +12,9 @@ void PaddlePlayerController::Tick(float dt)
     if (!m_controllable) return;
 
     const bool* key_state = SDL_GetKeyboardState(nullptr);
-    int dir = 0;
-    if (key_state[SDL_SCANCODE_UP]) dir = -1;
-    if (key_state[SDL_SCANCODE_DOWN]) dir = 1;
+    float dir = 0.f;
+    if (key_state[SDL_SCANCODE_UP]) dir = -1.f;
+    if (key_state[SDL_SCANCODE_DOWN]) dir = 1.f;
 
-    m_controllable->ConsumeInput(dir);
+    m_controllable->SetVelocity(SDL_FPoint(0.f, dir));
 }

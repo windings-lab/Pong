@@ -6,6 +6,13 @@
 
 #include <cmath>
 
+Ball::Ball()
+{
+    m_collider.w = width;
+    m_collider.h = height;
+
+    m_speed = 250.f;
+}
 Ball::~Ball()
 {
 }
@@ -15,11 +22,7 @@ void Ball::Initialize()
 
     Respawn();
 }
-void Ball::Tick(float dt)
-{
-    GameObject::Tick(dt);
-    Move(dt);
-}
+
 void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
 {
     GameObject::OnCollide(other, intersection);
@@ -27,13 +30,13 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
     if (auto paddle = dynamic_cast<Paddle*>(other); paddle) {
         // Push ball outside paddle first
         if (m_velocity.x > 0)
-            position.x -= intersection.w;
+            m_position.x -= intersection.w;
         else
-            position.x += intersection.w;
+            m_position.x += intersection.w;
 
         // Compute hit position
-        float paddleCenter = paddle->position.y + Paddle::height * 0.5f;
-        float ballCenter   = position.y + height * 0.5f;
+        float paddleCenter = paddle->GetPosition().y + Paddle::height * 0.5f;
+        float ballCenter   = m_position.y + height * 0.5f;
 
         float relativeY = ballCenter - paddleCenter;
         float normalized = relativeY / (Paddle::height * 0.5f);
@@ -51,33 +54,33 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
         // Rebuild velocity
         float dir = (m_velocity.x > 0) ? -1.f : 1.f;
 
-        m_velocity.x = dir * std::cos(angle) * speed;
-        m_velocity.y = std::sin(angle) * speed;
+        m_velocity.x = dir * std::cos(angle);
+        m_velocity.y = std::sin(angle);
     }
     if (auto wall = dynamic_cast<Walls*>(other); wall) {
         SDL_FRect bounds = wall->GetCollider();
 
         // Top wall
-        if (position.y <= 0.f) {
-            position.y = 0.f;
+        if (m_position.y <= 0.f) {
+            m_position.y = 0.f;
             m_velocity.y = -m_velocity.y;
         }
 
         // Bottom wall
-        if (position.y + height > bounds.h) {
-            position.y = bounds.h - height;
+        if (m_position.y + height > bounds.h) {
+            m_position.y = bounds.h - height;
             m_velocity.y = -m_velocity.y;
         }
 
         // Left Paddle lost
         // Right paddle gains a score
-        if (position.x <= 0.f) {
+        if (m_position.x <= 0.f) {
             Respawn();
         }
 
         // Right Paddle lost
         // Left paddle gains a score
-        if (position.x + width >= bounds.w) {
+        if (m_position.x + width >= bounds.w) {
             Respawn();
         }
     }
@@ -87,27 +90,18 @@ void Ball::Draw(Pong::SDL::Renderer* renderer) const
 {
     GameObject::Draw(renderer);
 
-    renderer->DrawRect(SDL_FRect(position.x, position.y, width, height));
-}
-SDL_FRect Ball::GetCollider()
-{
-    return SDL_FRect(position.x, position.y, width, height);
+    renderer->DrawRect(SDL_FRect(m_position.x, m_position.y, width, height));
 }
 void Ball::Respawn()
 {
     GameObject::Respawn();
 
     SDL_FRect level_bounds = GetLevelBounds();
-    position.x = level_bounds.w / 2.f - width / 2.f;
-    position.y = level_bounds.h / 2.f - height / 2.f;
+    m_position.x = level_bounds.w / 2.f - width / 2.f;
+    m_position.y = level_bounds.h / 2.f - height / 2.f;
 
     float angle = RandomFloat(-30.f, 30.f) * (std::numbers::pi / 180.f);
 
-    m_velocity.x = RandomDirection() * std::cos(angle) * speed;
-    m_velocity.y = std::sin(angle) * speed;
-}
-void Ball::Move(float dt)
-{
-    position.x += m_velocity.x * dt;
-    position.y += m_velocity.y * dt;
+    m_velocity.x = RandomDirection() * std::cos(angle);
+    m_velocity.y = std::sin(angle);
 }

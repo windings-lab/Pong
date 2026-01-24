@@ -20,16 +20,25 @@ public:
     ~GameObject() override;
 
     void Initialize() override;
+    void Tick(float dt) override;
 
     virtual void Respawn();
-
-    virtual void ConsumeInput(int input);
 
     virtual void OnCollide(GameObject* other, SDL_FRect intersection);
     virtual void Draw(Pong::SDL::Renderer* renderer) const;
 
-    virtual SDL_FRect GetCollider();
+    SDL_FRect GetCollider();
+    SDL_FPoint GetPosition() const;
+    bool IsVisible() const;
 
-    SDL_FPoint position;
-    bool visible;
+    void SetVelocity(SDL_FPoint velocity);
+    void SetSpeed(float speed);
+
+protected:
+    SDL_FPoint m_position;
+    SDL_FRect m_collider;
+    bool m_visible;
+
+    float m_speed;
+    SDL_FPoint m_velocity;
 };

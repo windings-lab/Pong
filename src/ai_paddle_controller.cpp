@@ -15,8 +15,8 @@ void AIPaddleController::Tick(float dt)
 
     if (!m_controllable_paddle || !m_ball) return;
 
-    float bot_y_middle = m_controllable_paddle->position.y + Paddle::height / 2.f;
-    float ball_y_middle = m_ball->position.y + Ball::height / 2.f;
+    float bot_y_middle = m_controllable_paddle->GetPosition().y + Paddle::height / 2.f;
+    float ball_y_middle = m_ball->GetPosition().y + Ball::height / 2.f;
 
     int dir = 0;
     if (bot_y_middle < ball_y_middle) {
@@ -26,5 +26,5 @@ void AIPaddleController::Tick(float dt)
         dir = -1;
     }
 
-    m_controllable->ConsumeInput(dir);
+    m_controllable->SetVelocity(SDL_FPoint(0.f, dir));
 }
