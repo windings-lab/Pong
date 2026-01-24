@@ -42,12 +42,10 @@ namespace Pong::SDL
     }
     void Renderer::swap(Renderer& a, Renderer& b) noexcept
     {
-        using std::swap;
-
         auto& a_casted = static_cast<Renderer&>(a);
         auto& b_casted = static_cast<Renderer&>(b);
 
-        swap(a_casted.m_sdl_renderer, b_casted.m_sdl_renderer);
+        std::swap(a_casted.m_sdl_renderer, b_casted.m_sdl_renderer);
     }
     void Renderer::Iterate(const std::vector<std::unique_ptr<Object>>& objects)
     {

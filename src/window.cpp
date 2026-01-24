@@ -38,8 +38,7 @@ int Window::height() const
 }
 void Window::swap(Window& a, Window& b) noexcept
 {
-    using std::swap;
-    swap(a.m_sdl_window, a.m_sdl_window);
-    swap(a.m_width, a.m_width);
-    swap(a.m_height, a.m_height);
+    std::swap(a.m_sdl_window, a.m_sdl_window);
+    std::swap(a.m_width, a.m_width);
+    std::swap(a.m_height, a.m_height);
 }
