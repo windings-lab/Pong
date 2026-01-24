@@ -9,6 +9,11 @@ public:
     Controller();
     explicit Controller(class GameObject* game_object);
 
+    void Tick(float dt) override;
+
+private:
+    void OnControllableDestroyed();
+
 protected:
     GameObject* m_controllable;
 };

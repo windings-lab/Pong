@@ -24,8 +24,16 @@ void LPong::Populate(GameState* gs)
     bot->SetColor({255, 0, 0, 255});
     bot->SetSpeed(100.f);
 
-    auto ball = gs->CreateObject<Ball>();
+    m_ball = gs->CreateObject<Ball>();
+    m_ball->SubscribeToOnDestroy([this] {
+        m_ball = nullptr;
+    });
+
     gs->CreateObject<Walls>(m_bounds);
     gs->CreateObject<PaddlePlayerController>(player);
-    gs->CreateObject<AIPaddleController>(bot, ball);
+    gs->CreateObject<AIPaddleController>(bot);
+}
+const Ball* LPong::GetBall() const
+{
+    return m_ball;
 }

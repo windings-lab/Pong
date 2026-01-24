@@ -38,8 +38,11 @@ public:
     virtual void Tick(float dt);
 
     void SetLevel(Level* level);
-    SDL_FRect GetLevelBounds() const;
+    const Level* GetLevel() const;
+
+    void SubscribeToOnDestroy(std::function<void()>&& callback) const;
 
 private:
     Level* m_level = nullptr;
+    mutable std::unique_ptr<Observer<>> OnDestroyedEvent = nullptr;
 };

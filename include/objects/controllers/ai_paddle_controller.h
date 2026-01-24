@@ -2,16 +2,18 @@
 
 #include "controller.h"
 
+class Ball;
+
 class AIPaddleController : public Controller
 {
 public:
     DERIVED_STATIC_CLASS(Controller)
 
-    explicit AIPaddleController(class Paddle* bot, class Ball* ball);
+    explicit AIPaddleController(GameObject* bot);
 
+    void Initialize() override;
     void Tick(float dt) override;
 
 private:
-    Paddle* m_controllable_paddle;
-    Ball* m_ball;
+    const Ball* m_ball;
 };

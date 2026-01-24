@@ -1,5 +1,6 @@
 #include "objects/game_objects/ball.h"
 
+#include "levels/level.h"
 #include "objects/game_objects/paddle.h"
 #include "objects/game_objects/walls.h"
 #include "sdl_renderer.h"
@@ -98,7 +99,7 @@ void Ball::Respawn()
 {
     GameObject::Respawn();
 
-    SDL_FRect level_bounds = GetLevelBounds();
+    SDL_FRect level_bounds = GetLevel()->GetBounds();
     m_position.x = level_bounds.w / 2.f - width / 2.f;
     m_position.y = level_bounds.h / 2.f - height / 2.f;
 
