@@ -30,5 +30,5 @@ void AIPaddleController::Tick(float dt)
 
     int dir = static_cast<int>(std::copysign(1.0f, ball_y_middle - bot_y_middle) * (ball_y_middle != bot_y_middle));
 
-    m_controllable->SetVelocity(SDL_FPoint(0.f, dir));
+    m_controllable->SetDirection(SDL_FPoint(0.f, dir));
 }

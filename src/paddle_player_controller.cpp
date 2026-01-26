@@ -16,5 +16,5 @@ void PaddlePlayerController::Tick(float dt)
     if (key_state[SDL_SCANCODE_UP]) dir = -1.f;
     if (key_state[SDL_SCANCODE_DOWN]) dir = 1.f;
 
-    m_controllable->SetVelocity(SDL_FPoint(0.f, dir));
+    m_controllable->SetDirection(SDL_FPoint(0.f, dir));
 }

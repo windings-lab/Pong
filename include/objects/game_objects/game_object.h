@@ -31,10 +31,10 @@ public:
     SDL_FPoint GetPosition() const;
 
     bool IsVisible() const;
-    void SetColor(SDL_Color color);
+    void SetColor(SDL_Color);
 
-    void SetVelocity(SDL_FPoint velocity);
-    void SetSpeed(float speed);
+    void SetDirection(SDL_FPoint);
+    void SetSpeed(float);
 
 protected:
     SDL_FPoint m_position;
@@ -44,5 +44,5 @@ protected:
     bool m_visible;
 
     float m_speed;
-    SDL_FPoint m_velocity;
+    SDL_FPoint m_direction;
 };

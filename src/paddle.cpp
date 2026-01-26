@@ -24,13 +24,13 @@ void Paddle::OnCollide(GameObject* other, SDL_FRect intersection)
     if (auto walls = other->Cast<Walls>(); walls) {
         SDL_FRect bounds = walls->GetCollider();
 
-        if (m_velocity.y == -1 && m_position.y <= bounds.y) {
-            m_velocity.y = 0;
+        if (m_direction.y == -1 && m_position.y <= bounds.y) {
+            m_direction.y = 0;
             m_position.y = 0.f;
         }
 
-        if (m_velocity.y == 1 && m_position.y >= (bounds.y + bounds.h) - height) {
-            m_velocity.y = 0;
+        if (m_direction.y == 1 && m_position.y >= (bounds.y + bounds.h) - height) {
+            m_direction.y = 0;
             m_position.y = (bounds.y + bounds.h) - height;
         }
     }

@@ -32,7 +32,7 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
 
     if (auto paddle = dynamic_cast<Paddle*>(other); paddle) {
         // Push ball outside paddle first
-        if (m_velocity.x > 0)
+        if (m_direction.x > 0)
             m_position.x -= intersection.w;
         else
             m_position.x += intersection.w;
@@ -55,10 +55,10 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
         }
 
         // Rebuild velocity
-        float dir = (m_velocity.x > 0) ? -1.f : 1.f;
+        float dir = (m_direction.x > 0) ? -1.f : 1.f;
 
-        m_velocity.x = dir * std::cos(angle);
-        m_velocity.y = std::sin(angle);
+        m_direction.x = dir * std::cos(angle);
+        m_direction.y = std::sin(angle);
     }
     if (auto wall = dynamic_cast<Walls*>(other); wall) {
         SDL_FRect bounds = wall->GetCollider();
@@ -66,13 +66,13 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
         // Top wall
         if (m_position.y <= 0.f) {
             m_position.y = 0.f;
-            m_velocity.y = -m_velocity.y;
+            m_direction.y = -m_direction.y;
         }
 
         // Bottom wall
         if (m_position.y + height > bounds.h) {
             m_position.y = bounds.h - height;
-            m_velocity.y = -m_velocity.y;
+            m_direction.y = -m_direction.y;
         }
 
         // Left Paddle lost
@@ -105,6 +105,6 @@ void Ball::Respawn()
 
     float angle = RandomFloat(-30.f, 30.f) * (std::numbers::pi / 180.f);
 
-    m_velocity.x = RandomDirection() * std::cos(angle);
-    m_velocity.y = std::sin(angle);
+    m_direction.x = RandomDirection() * std::cos(angle);
+    m_direction.y = std::sin(angle);
 }

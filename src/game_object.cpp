@@ -12,7 +12,7 @@ GameObject::GameObject(SDL_FPoint position)
     , m_color()
     , m_visible(true)
     , m_speed(0.f)
-    , m_velocity()
+    , m_direction()
 {
 }
 GameObject::~GameObject() = default;
@@ -26,8 +26,8 @@ void GameObject::Tick(float dt)
 {
     Object::Tick(dt);
 
-    m_position.x += m_velocity.x * dt * m_speed;
-    m_position.y += m_velocity.y * dt * m_speed;
+    m_position.x += m_direction.x * dt * m_speed;
+    m_position.y += m_direction.y * dt * m_speed;
 }
 void GameObject::Respawn()
 {
@@ -53,15 +53,15 @@ bool GameObject::IsVisible() const
 {
     return m_visible;
 }
-void GameObject::SetColor(SDL_Color color)
+void GameObject::SetColor(SDL_Color value)
 {
-    m_color = color;
+    m_color = value;
 }
-void GameObject::SetVelocity(SDL_FPoint velocity)
+void GameObject::SetDirection(SDL_FPoint value)
 {
-    m_velocity = velocity;
+    m_direction = value;
 }
-void GameObject::SetSpeed(float speed)
+void GameObject::SetSpeed(float value)
 {
-    m_speed = speed;
+    m_speed = value;
 }
