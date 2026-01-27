@@ -9,12 +9,9 @@
 
 Ball::Ball()
 {
-    m_collider.w = width;
-    m_collider.h = height;
-
-    m_speed = 250.f;
-
-    m_color = {255, 255, 0, 255};
+    SetCollider(width, height);
+    SetSpeed(250.f);
+    SetColor({255, 255, 0, 255});
 }
 Ball::~Ball()
 {
@@ -22,18 +19,18 @@ Ball::~Ball()
 
 void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
 {
-    GameObject::OnCollide(other, intersection);
+    SDL_FPoint direction = GetDirection();
+    SDL_FPoint position = GetPosition();
 
     if (auto paddle = dynamic_cast<Paddle*>(other); paddle) {
         // Push ball outside paddle first
-        if (m_direction.x > 0)
-            m_position.x -= intersection.w;
-        else
-            m_position.x += intersection.w;
+        SDL_FRect paddleBounds = paddle->GetCollider();
+
+        position.x = direction.x > 0.f ? paddleBounds.x - width : paddleBounds.x + paddleBounds.w;
 
         // Compute hit position
         float paddleCenter = paddle->GetPosition().y + Paddle::height * 0.5f;
-        float ballCenter   = m_position.y + height * 0.5f;
+        float ballCenter   = position.y + height * 0.5f;
 
         float relativeY = ballCenter - paddleCenter;
         float normalized = relativeY / (Paddle::height * 0.5f);
@@ -48,32 +45,43 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
             angle = normalized * MaxBounceAngle;
         }
 
-        // Rebuild velocity
-        float dir = (m_direction.x > 0) ? -1.f : 1.f;
+        // Rebuild direction
+        float dir = -std::copysignf(1.f, direction.x);
+        direction.x = dir * std::cos(angle);
+        direction.y = std::sin(angle);
 
-        m_direction.x = dir * std::cos(angle);
-        m_direction.y = std::sin(angle);
+        SetPosition(position);
+        SetDirection(direction);
     }
     if (auto wall = dynamic_cast<Walls*>(other); wall) {
         SDL_FRect bounds = wall->GetCollider();
 
         // Top wall
-        if (m_position.y <= 0.f) {
-            m_position.y = 0.f;
-            m_direction.y = -m_direction.y;
+        if (position.y < bounds.y) {
+            position.y = bounds.y;
+            direction.y *= -1.f;
+
+            SetPosition(position);
+            SetDirection(direction);
         }
 
         // Bottom wall
-        if (m_position.y + height > bounds.h) {
-            m_position.y = bounds.h - height;
-            m_direction.y = -m_direction.y;
+        if (position.y + height > bounds.h + bounds.y) {
+            position.y = bounds.h - height;
+            direction.y *= -1.f;
+
+            SetPosition(position);
+            SetDirection(direction);
         }
     }
 
+    GameObject::OnCollide(other, intersection);
 }
 void Ball::Draw(Pong::SDL::Renderer* renderer) const
 {
     GameObject::Draw(renderer);
 
-    renderer->DrawRect(SDL_FRect(m_position.x, m_position.y, width, height));
+    SDL_FPoint position = GetPosition();
+
+    renderer->DrawRect(SDL_FRect(position.x, position.y, width, height));
 }

@@ -2,8 +2,8 @@
 
 Walls::Walls(SDL_FRect bounds)
 {
-    m_collider = bounds;
-    m_visible = false;
+    SetCollider(bounds.w, bounds.h);
+    SetVisible(false);
 }
 Walls::~Walls()
 {

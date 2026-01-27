@@ -58,7 +58,7 @@ void LPong::BallRespawn()
     // Randomize direction on spawn
     float angle = RandomFloat(-30.f, 30.f) * (std::numbers::pi / 180.f);
     m_ball->SetDirection({
-        RandomDirection() * std::cos(angle),
+        1.f * std::cos(angle),
         std::sin(angle)
     });
 }

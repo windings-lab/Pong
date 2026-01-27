@@ -25,18 +25,23 @@ public:
     virtual void Draw(Pong::SDL::Renderer* renderer) const;
 
     SDL_FRect GetCollider();
+    void SetCollider(float width, float height);
     void SubscribeToOnCollideEvent(std::function<void(GameObject*, SDL_FRect)>&& callback);
 
     void SetPosition(SDL_FPoint);
     SDL_FPoint GetPosition() const;
 
     bool IsVisible() const;
+    void SetVisible(bool);
+
     void SetColor(SDL_Color);
 
+    SDL_FPoint GetDirection() const;
     void SetDirection(SDL_FPoint);
+
     void SetSpeed(float);
 
-protected:
+private:
     SDL_FPoint m_position;
     SDL_FRect m_collider;
 
@@ -46,6 +51,5 @@ protected:
     float m_speed;
     SDL_FPoint m_direction;
 
-private:
     Observer<GameObject*, SDL_FRect> OnCollideEvent;
 };

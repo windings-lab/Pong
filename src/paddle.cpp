@@ -7,11 +7,9 @@ Paddle::Paddle() : Paddle(SDL_FPoint(0.f, 0.f)) {}
 Paddle::Paddle(SDL_FPoint position)
     : GameObject(position)
 {
-    m_collider.w = width;
-    m_collider.h = height;
-    m_speed = 200.f;
-
-    m_color = {255, 255, 255, 255};
+    SetCollider(width, height);
+    SetSpeed(200.f);
+    SetColor({255, 255, 255, 255});
 }
 Paddle::~Paddle()
 {
@@ -19,16 +17,21 @@ Paddle::~Paddle()
 }
 void Paddle::OnCollide(GameObject* other, SDL_FRect intersection)
 {
-    GameObject::OnCollide(other, intersection);
-
     if (auto walls = other->Cast<Walls>(); walls) {
-        SDL_FRect bounds = walls->GetCollider();
-        m_position.y = std::clamp(m_position.y, bounds.y, bounds.y + bounds.h - height);
+        SDL_FRect wall_bounds = walls->GetCollider();
+        SDL_FPoint position = GetPosition();
+
+        position.y = std::clamp(position.y, wall_bounds.y, wall_bounds.y + wall_bounds.h - height);
+        SetPosition(position);
     }
+
+    GameObject::OnCollide(other, intersection);
 }
 void Paddle::Draw(Pong::SDL::Renderer* renderer) const
 {
     GameObject::Draw(renderer);
 
-    renderer->DrawRect(SDL_FRect(m_position.x, m_position.y, width, height));
+    SDL_FPoint position = GetPosition();
+
+    renderer->DrawRect(SDL_FRect(position.x, position.y, width, height));
 }

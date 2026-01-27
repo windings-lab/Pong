@@ -1,6 +1,7 @@
 #include "objects/game_objects/game_object.h"
 
 #include "../../../MSVC/BuildTools/VC/Tools/MSVC/14.50.35717/include/chrono"
+#include "../include/objects/game_objects/ball.h"
 #include "sdl_renderer.h"
 
 GameObject::GameObject()
@@ -39,12 +40,23 @@ SDL_FRect GameObject::GetCollider()
     m_collider.y = m_position.y;
     return m_collider;
 }
+void GameObject::SetCollider(float width, float height)
+{
+    m_collider.w = width;
+    m_collider.h = height;
+}
 void GameObject::SubscribeToOnCollideEvent(std::function<void(GameObject*, SDL_FRect)>&& callback)
 {
     OnCollideEvent.Subscribe(std::move(callback));
 }
 void GameObject::SetPosition(SDL_FPoint value)
 {
+    bool test = this->Cast<Ball>();
+
+    if (test) {
+        test = true;
+    }
+
     m_position = value;
 }
 SDL_FPoint GameObject::GetPosition() const
@@ -55,9 +67,17 @@ bool GameObject::IsVisible() const
 {
     return m_visible;
 }
+void GameObject::SetVisible(bool value)
+{
+    m_visible = value;
+}
 void GameObject::SetColor(SDL_Color value)
 {
     m_color = value;
+}
+SDL_FPoint GameObject::GetDirection() const
+{
+    return m_direction;
 }
 void GameObject::SetDirection(SDL_FPoint value)
 {

@@ -28,6 +28,10 @@ float GameState::CalculateDeltaTime()
     float dt = static_cast<float>(current_time - m_last_time) / m_frequency;
     m_last_time = current_time;
 
+#ifndef NDEBUG
+    dt = std::min(dt, 0.1f);
+#endif
+
     return dt;
 }
 void GameState::TickObjects()
