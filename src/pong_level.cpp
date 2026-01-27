@@ -28,12 +28,31 @@ void LPong::Populate(GameState* gs)
     m_ball->SubscribeToOnDestroy([this] {
         m_ball = nullptr;
     });
+    SDL_FRect ball_collider = m_ball->GetCollider();
+    m_ball_spawn_point = {
+        m_bounds.w / 2.f - ball_collider.w / 2.f,
+        m_bounds.h / 2.f - ball_collider.h / 2.f
+    };
+    BallRespawn();
 
     gs->CreateObject<Walls>(m_bounds);
     gs->CreateObject<PaddlePlayerController>(player);
-    gs->CreateObject<AIPaddleController>(bot);
+
+    auto ai_controller = gs->CreateObject<AIPaddleController>(bot);
+    ai_controller->SetBall(m_ball);
+    m_ball->SubscribeToOnDestroy([ai_controller] {
+        ai_controller->SetBall(nullptr);
+    });
 }
-const Ball* LPong::GetBall() const
+
+void LPong::BallRespawn()
 {
-    return m_ball;
+    m_ball->SetPosition(m_ball_spawn_point);
+
+    // Randomize direction on spawn
+    float angle = RandomFloat(-30.f, 30.f) * (std::numbers::pi / 180.f);
+    m_ball->SetDirection({
+        RandomDirection() * std::cos(angle),
+        std::sin(angle)
+    });
 }

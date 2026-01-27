@@ -20,7 +20,6 @@ void GameState::Initialize()
 
     for (auto& object : m_objects) {
         object->SetLevel(m_level.get());
-        object->Initialize();
     }
 }
 void GameState::Iterate()

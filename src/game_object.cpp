@@ -1,5 +1,6 @@
 #include "objects/game_objects/game_object.h"
 
+#include "../../../MSVC/BuildTools/VC/Tools/MSVC/14.50.35717/include/chrono"
 #include "sdl_renderer.h"
 
 GameObject::GameObject()
@@ -16,12 +17,7 @@ GameObject::GameObject(SDL_FPoint position)
 {
 }
 GameObject::~GameObject() = default;
-void GameObject::Initialize()
-{
-    Object::Initialize();
 
-    Respawn();
-}
 void GameObject::Tick(float dt)
 {
     Object::Tick(dt);
@@ -44,6 +40,10 @@ SDL_FRect GameObject::GetCollider()
     m_collider.x = m_position.x;
     m_collider.y = m_position.y;
     return m_collider;
+}
+void GameObject::SetPosition(SDL_FPoint value)
+{
+    m_position = value;
 }
 SDL_FPoint GameObject::GetPosition() const
 {

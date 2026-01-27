@@ -9,7 +9,6 @@ public:
 
     Ball();
     ~Ball() override;
-    void Initialize() override;
     void OnCollide(GameObject* other, SDL_FRect intersection) override;
 
     void Draw(Pong::SDL::Renderer* renderer) const override;

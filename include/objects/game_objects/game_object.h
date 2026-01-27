@@ -19,7 +19,6 @@ public:
     explicit GameObject(SDL_FPoint);
     ~GameObject() override;
 
-    void Initialize() override;
     void Tick(float dt) override;
 
     virtual void Respawn();
@@ -28,6 +27,8 @@ public:
     virtual void Draw(Pong::SDL::Renderer* renderer) const;
 
     SDL_FRect GetCollider();
+
+    void SetPosition(SDL_FPoint);
     SDL_FPoint GetPosition() const;
 
     bool IsVisible() const;

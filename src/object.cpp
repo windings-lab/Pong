@@ -8,9 +8,6 @@ Object::~Object()
     if (OnDestroyedEvent)
         OnDestroyedEvent->Emit();
 }
-void Object::Initialize()
-{
-}
 void Object::Tick(float dt)
 {
 }

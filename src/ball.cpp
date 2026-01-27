@@ -19,12 +19,6 @@ Ball::Ball()
 Ball::~Ball()
 {
 }
-void Ball::Initialize()
-{
-    GameObject::Initialize();
-
-    Respawn();
-}
 
 void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
 {

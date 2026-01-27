@@ -34,7 +34,6 @@ public:
         return false;
     }
 
-    virtual void Initialize();
     virtual void Tick(float dt);
 
     void SetLevel(Level* level);

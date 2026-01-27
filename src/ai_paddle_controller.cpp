@@ -9,15 +9,6 @@ AIPaddleController::AIPaddleController(GameObject* bot)
     , m_ball(nullptr)
 {
 }
-void AIPaddleController::Initialize()
-{
-    Controller::Initialize();
-
-    m_ball = static_cast<const LPong*>(GetLevel())->GetBall();
-    m_ball->SubscribeToOnDestroy([this] {
-        m_ball = nullptr;
-    });
-}
 
 void AIPaddleController::Tick(float dt)
 {
@@ -31,4 +22,8 @@ void AIPaddleController::Tick(float dt)
     int dir = static_cast<int>(std::copysign(1.0f, ball_y_middle - bot_y_middle) * (ball_y_middle != bot_y_middle));
 
     m_controllable->SetDirection(SDL_FPoint(0.f, dir));
+}
+void AIPaddleController::SetBall(Ball* value)
+{
+    m_ball = value;
 }

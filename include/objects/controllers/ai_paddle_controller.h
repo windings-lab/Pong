@@ -11,8 +11,9 @@ public:
 
     explicit AIPaddleController(GameObject* bot);
 
-    void Initialize() override;
     void Tick(float dt) override;
+
+    void SetBall(Ball*);
 
 private:
     const Ball* m_ball;

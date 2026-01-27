@@ -10,8 +10,9 @@ public:
 
     void Populate(GameState*) override;
 
-    const Ball* GetBall() const;
+    void BallRespawn();
 
 private:
     Ball* m_ball = nullptr;
+    SDL_FPoint m_ball_spawn_point{};
 };
