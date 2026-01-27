@@ -13,8 +13,6 @@ public:
 
     void Draw(Pong::SDL::Renderer* renderer) const override;
 
-    void Respawn() override;
-
     constexpr static float width = 25.f;
     constexpr static float height = 25.f;
 };

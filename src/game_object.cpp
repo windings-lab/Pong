@@ -25,11 +25,9 @@ void GameObject::Tick(float dt)
     m_position.x += m_direction.x * dt * m_speed;
     m_position.y += m_direction.y * dt * m_speed;
 }
-void GameObject::Respawn()
-{
-}
 void GameObject::OnCollide(GameObject* other, SDL_FRect intersection)
 {
+    OnCollideEvent.Emit(other, intersection);
 }
 void GameObject::Draw(Pong::SDL::Renderer* renderer) const
 {
@@ -40,6 +38,10 @@ SDL_FRect GameObject::GetCollider()
     m_collider.x = m_position.x;
     m_collider.y = m_position.y;
     return m_collider;
+}
+void GameObject::SubscribeToOnCollideEvent(std::function<void(GameObject*, SDL_FRect)>&& callback)
+{
+    OnCollideEvent.Subscribe(std::move(callback));
 }
 void GameObject::SetPosition(SDL_FPoint value)
 {

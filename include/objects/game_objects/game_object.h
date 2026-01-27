@@ -21,12 +21,11 @@ public:
 
     void Tick(float dt) override;
 
-    virtual void Respawn();
-
     virtual void OnCollide(GameObject* other, SDL_FRect intersection);
     virtual void Draw(Pong::SDL::Renderer* renderer) const;
 
     SDL_FRect GetCollider();
+    void SubscribeToOnCollideEvent(std::function<void(GameObject*, SDL_FRect)>&& callback);
 
     void SetPosition(SDL_FPoint);
     SDL_FPoint GetPosition() const;
@@ -46,4 +45,7 @@ protected:
 
     float m_speed;
     SDL_FPoint m_direction;
+
+private:
+    Observer<GameObject*, SDL_FRect> OnCollideEvent;
 };

@@ -68,18 +68,6 @@ void Ball::OnCollide(GameObject* other, SDL_FRect intersection)
             m_position.y = bounds.h - height;
             m_direction.y = -m_direction.y;
         }
-
-        // Left Paddle lost
-        // Right paddle gains a score
-        if (m_position.x <= 0.f) {
-            Respawn();
-        }
-
-        // Right Paddle lost
-        // Left paddle gains a score
-        if (m_position.x + width >= bounds.w) {
-            Respawn();
-        }
     }
 
 }
@@ -88,13 +76,4 @@ void Ball::Draw(Pong::SDL::Renderer* renderer) const
     GameObject::Draw(renderer);
 
     renderer->DrawRect(SDL_FRect(m_position.x, m_position.y, width, height));
-}
-void Ball::Respawn()
-{
-    GameObject::Respawn();
-
-    float angle = RandomFloat(-30.f, 30.f) * (std::numbers::pi / 180.f);
-
-    m_direction.x = RandomDirection() * std::cos(angle);
-    m_direction.y = std::sin(angle);
 }
