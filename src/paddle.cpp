@@ -23,16 +23,7 @@ void Paddle::OnCollide(GameObject* other, SDL_FRect intersection)
 
     if (auto walls = other->Cast<Walls>(); walls) {
         SDL_FRect bounds = walls->GetCollider();
-
-        if (m_direction.y == -1 && m_position.y <= bounds.y) {
-            m_direction.y = 0;
-            m_position.y = 0.f;
-        }
-
-        if (m_direction.y == 1 && m_position.y >= (bounds.y + bounds.h) - height) {
-            m_direction.y = 0;
-            m_position.y = (bounds.y + bounds.h) - height;
-        }
+        m_position.y = std::clamp(m_position.y, bounds.y, bounds.y + bounds.h - height);
     }
 }
 void Paddle::Draw(Pong::SDL::Renderer* renderer) const
