@@ -11,14 +11,6 @@ Object::~Object()
 void Object::Tick(float dt)
 {
 }
-void Object::SetLevel(Level* level)
-{
-    m_level = level;
-}
-const Level* Object::GetLevel() const
-{
-    return m_level;
-}
 void Object::SubscribeToOnDestroy(std::function<void()>&& callback) const
 {
     if (!OnDestroyedEvent)

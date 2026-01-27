@@ -93,10 +93,6 @@ void Ball::Respawn()
 {
     GameObject::Respawn();
 
-    SDL_FRect level_bounds = GetLevel()->GetBounds();
-    m_position.x = level_bounds.w / 2.f - width / 2.f;
-    m_position.y = level_bounds.h / 2.f - height / 2.f;
-
     float angle = RandomFloat(-30.f, 30.f) * (std::numbers::pi / 180.f);
 
     m_direction.x = RandomDirection() * std::cos(angle);

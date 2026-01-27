@@ -17,10 +17,6 @@ const std::vector<std::unique_ptr<Object>>& GameState::Objects() const
 void GameState::Initialize()
 {
     m_level->Populate(this);
-
-    for (auto& object : m_objects) {
-        object->SetLevel(m_level.get());
-    }
 }
 void GameState::Iterate()
 {
